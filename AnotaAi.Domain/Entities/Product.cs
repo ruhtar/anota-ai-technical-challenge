@@ -6,7 +6,6 @@ namespace AnotaAi.Domain.Entities
 {
     public class Product
     {
-        [BsonId]
         public ObjectId Id { get; set; }
 
         [BsonElement("title")]
@@ -19,7 +18,7 @@ namespace AnotaAi.Domain.Entities
         public decimal Price { get; set; }
 
         [BsonElement("category")]
-        public Category Category { get; set; } = null!;
+        public string CategoryId { get; set; }
 
         [BsonElement("ownerId")]
         public string OwnerId { get; set; } = null!;
@@ -37,7 +36,7 @@ namespace AnotaAi.Domain.Entities
             OwnerId = productDto.OwnerId;
 
             if (productDto.Category != null)
-                Category = new Category(productDto.Category);
+                CategoryId = new Category(productDto.Category);
         }
     }
 }

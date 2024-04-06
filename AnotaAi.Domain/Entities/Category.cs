@@ -6,7 +6,6 @@ namespace AnotaAi.Domain.Entities;
 
 public class Category
 {
-    [BsonId]
     public ObjectId Id { get; set; }
 
     [BsonElement("title")]

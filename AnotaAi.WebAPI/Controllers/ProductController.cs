@@ -15,6 +15,12 @@ namespace AnotaAi.WebAPI.Controllers
             this.productRepository = productRepository;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await productRepository.GetAll());
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ProductCreateDto productCreateDto)
         {

@@ -5,6 +5,8 @@ namespace AnotaAi.Infraestructure.Repositories
 {
     public interface ICategoryRepository
     {
+        Task<List<Category>> GetAll();
+        Task<Category> GetById(string id);
         Task InsertAsync(Category category);
     }
 
@@ -19,6 +21,17 @@ namespace AnotaAi.Infraestructure.Repositories
             _client = new MongoClient("mongodb://localhost:27017"); //TODO: alterar
             _database = _client.GetDatabase("catalog");
             _categoryCollection = _database.GetCollection<Category>("categories");
+        }
+
+        public async Task<Category> GetById(string id)
+        {
+            var filter = Builders<Category>.Filter.Eq("_id", id);
+            return await _categoryCollection.Find(filter).FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Category>> GetAll()
+        {
+            return await _categoryCollection.Find(Builders<Category>.Filter.Empty).ToListAsync();
         }
 
         public async Task InsertAsync(Category category)

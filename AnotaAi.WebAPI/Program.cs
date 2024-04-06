@@ -1,3 +1,4 @@
+using AnotaAi.Application.Services;
 using AnotaAi.Infraestructure.Repositories;
 
 namespace AnotaAi.WebAPI
@@ -14,6 +15,8 @@ namespace AnotaAi.WebAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
 
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();

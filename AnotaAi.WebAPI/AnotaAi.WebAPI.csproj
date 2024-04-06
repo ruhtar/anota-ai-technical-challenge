@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AnotaAi.Application\AnotaAi.Application.csproj" />
     <ProjectReference Include="..\AnotaAi.Infraestructure\AnotaAi.Infraestructure.csproj" />
   </ItemGroup>
 
