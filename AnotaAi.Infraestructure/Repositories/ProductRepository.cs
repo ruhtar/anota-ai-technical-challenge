@@ -9,9 +9,9 @@ namespace AnotaAi.Infraestructure.Repositories
         private readonly IMongoDatabase _database;
         private readonly IMongoCollection<Product> _productsCollection;
 
-        public ProductRepository(string connectionString)
+        public ProductRepository()
         {
-            _client = new MongoClient(connectionString);
+            _client = new MongoClient("mongodb://localhost:27017"); //TODO: alterar
             _database = _client.GetDatabase("catalog");
             _productsCollection = _database.GetCollection<Product>("products");
         }

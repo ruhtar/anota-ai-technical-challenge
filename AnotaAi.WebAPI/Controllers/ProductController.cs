@@ -14,6 +14,7 @@ namespace AnotaAi.WebAPI.Controllers
             this.productRepository = productRepository;
         }
 
+        [HttpPost]
         public async Task<IActionResult> Create()
         {
             Product produto = new Product
