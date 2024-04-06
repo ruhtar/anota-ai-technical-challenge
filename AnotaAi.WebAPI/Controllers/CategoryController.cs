@@ -19,12 +19,7 @@ namespace AnotaAi.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CategoryCreateDto categoryCreateDto)
         {
-            var category = new Category()
-            {
-                Title = categoryCreateDto.Title,
-                Description = categoryCreateDto.Description,
-                OwnerId = categoryCreateDto.OwnerId,
-            };
+            var category = new Category(categoryCreateDto);
 
             await categoryRepository.InsertAsync(category);
             return Ok(category);

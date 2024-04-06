@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using AnotaAi.Domain.DTOs;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace AnotaAi.Domain.Entities;
@@ -16,4 +17,16 @@ public class Category
 
     [BsonElement("ownerId")]
     public string OwnerId { get; set; } = null!;
+
+    public Category()
+    {
+
+    }
+
+    public Category(CategoryCreateDto categoryDto)
+    {
+        Title = categoryDto.Title;
+        Description = categoryDto.Description;
+        OwnerId = categoryDto.OwnerId;
+    }
 }

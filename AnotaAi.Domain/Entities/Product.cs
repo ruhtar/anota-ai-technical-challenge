@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using AnotaAi.Domain.DTOs;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace AnotaAi.Domain.Entities
@@ -22,5 +23,21 @@ namespace AnotaAi.Domain.Entities
 
         [BsonElement("ownerId")]
         public string OwnerId { get; set; } = null!;
+
+        public Product()
+        {
+
+        }
+
+        public Product(ProductCreateDto productDto)
+        {
+            Title = productDto.Title;
+            Description = productDto.Description;
+            Price = productDto.Price;
+            OwnerId = productDto.OwnerId;
+
+            if (productDto.Category != null)
+                Category = new Category(productDto.Category);
+        }
     }
 }
