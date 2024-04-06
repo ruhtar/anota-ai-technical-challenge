@@ -18,7 +18,7 @@ namespace AnotaAi.Domain.Entities
         public decimal Price { get; set; }
 
         [BsonElement("category")]
-        public string Category { get; set; } = null!;
+        public Category Category { get; set; } = null!;
 
         [BsonElement("ownerId")]
         public string OwnerId { get; set; } = null!;

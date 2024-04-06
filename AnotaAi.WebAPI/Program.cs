@@ -1,7 +1,6 @@
-
 using AnotaAi.Infraestructure.Repositories;
 
-namespace AnotaAi
+namespace AnotaAi.WebAPI
 {
     public class Program
     {
@@ -17,6 +16,7 @@ namespace AnotaAi
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
             var app = builder.Build();
 

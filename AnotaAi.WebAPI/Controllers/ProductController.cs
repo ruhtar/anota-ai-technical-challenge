@@ -1,4 +1,5 @@
-﻿using AnotaAi.Domain.Entities;
+﻿using AnotaAi.Domain.DTOs;
+using AnotaAi.Domain.Entities;
 using AnotaAi.Infraestructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,18 +16,24 @@ namespace AnotaAi.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create([FromBody] ProductCreateDto productCreateDto)
         {
-            Product produto = new Product
+            var category = new Category()
             {
-                Title = "Smartphone",
-                Description = "Brand new smartphone with latest features.",
-                Price = 999.99m,
-                Category = "Electronics",
-                OwnerId = "user123"
+                Title = productCreateDto.Category.Title,
+                Description = productCreateDto.Category.Description,
+                OwnerId = productCreateDto.Category.OwnerId,
             };
-            await productRepository.InsertPost(produto);
-            return Ok(produto);
+            var product = new Product()
+            {
+                Category = category,
+                Description = productCreateDto.Description,
+                OwnerId = productCreateDto.OwnerId,
+                Price = productCreateDto.Price,
+                Title = productCreateDto.Title
+            };
+            await productRepository.InsertAsync(product);
+            return Ok(product);
         }
     }
 }

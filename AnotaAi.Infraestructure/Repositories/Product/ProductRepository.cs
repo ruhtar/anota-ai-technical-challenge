@@ -3,9 +3,14 @@ using MongoDB.Driver;
 
 namespace AnotaAi.Infraestructure.Repositories
 {
+    public interface IProductRepository
+    {
+        Task InsertAsync(Product product);
+    }
+
     public class ProductRepository : IProductRepository
     {
-        private readonly IMongoClient _client;
+        private readonly MongoClient _client;
         private readonly IMongoDatabase _database;
         private readonly IMongoCollection<Product> _productsCollection;
 
@@ -16,7 +21,7 @@ namespace AnotaAi.Infraestructure.Repositories
             _productsCollection = _database.GetCollection<Product>("products");
         }
 
-        public async Task InsertPost(Product product)
+        public async Task InsertAsync(Product product)
         {
             await _productsCollection.InsertOneAsync(product);
         }
