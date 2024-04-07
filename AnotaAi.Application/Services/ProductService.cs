@@ -35,7 +35,7 @@ namespace AnotaAi.Application.Services
 
         public async Task<Product> InsertAsync(ProductCreateDto productCreateDto)
         {
-            var category = await categoryService.GetById(productCreateDto.CategoryId);
+            var _ = await categoryService.GetById(productCreateDto.CategoryId) ?? throw new Exception("Category not found");
             var product = new Product(productCreateDto);
             await productRepository.InsertAsync(product);
             return product;

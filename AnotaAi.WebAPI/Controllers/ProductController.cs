@@ -29,8 +29,16 @@ namespace AnotaAi.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ProductCreateDto productCreateDto)
         {
-            var result = await productService.InsertAsync(productCreateDto);
-            return Ok(result);
+            try
+            {
+                var result = await productService.InsertAsync(productCreateDto);
+                return Ok(result);
+
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
         }
     }
 }
