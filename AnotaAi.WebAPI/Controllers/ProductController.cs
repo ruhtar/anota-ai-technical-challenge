@@ -14,6 +14,12 @@ namespace AnotaAi.WebAPI.Controllers
             this.productService = productService;
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] string id)
+        {
+            return Ok(await productService.GetById(id));
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

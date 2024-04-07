@@ -1,6 +1,5 @@
-﻿using AnotaAi.Domain.DTOs;
-using AnotaAi.Domain.Entities;
-using AnotaAi.Infraestructure.Repositories;
+﻿using AnotaAi.Application.Services;
+using AnotaAi.Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnotaAi.WebAPI.Controllers
@@ -9,20 +8,29 @@ namespace AnotaAi.WebAPI.Controllers
     [Route("[controller]")]
     public class CategoryController : Controller
     {
-        private readonly ICategoryRepository categoryRepository;
+        private readonly ICategoryService categoryService;
 
-        public CategoryController(ICategoryRepository categoryRepository)
+        public CategoryController(ICategoryService categoryService)
         {
-            this.categoryRepository = categoryRepository;
+            this.categoryService = categoryService;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] string id)
+        {
+            return Ok(await categoryService.GetById(id));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await categoryService.GetAllAsync());
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CategoryCreateDto categoryCreateDto)
         {
-            var category = new Category(categoryCreateDto);
-
-            await categoryRepository.InsertAsync(category);
-            return Ok(category);
+            return Ok(await categoryService.InsertAsync(categoryCreateDto));
         }
     }
 }

@@ -7,6 +7,7 @@ namespace AnotaAi.Application.Services
     public interface IProductService
     {
         Task<List<Product>> GetAllAsync();
+        Task<Product> GetById(string id);
         Task<Product> InsertAsync(ProductCreateDto productCreateDto);
     }
 
@@ -24,6 +25,12 @@ namespace AnotaAi.Application.Services
         public async Task<List<Product>> GetAllAsync()
         {
             return await productRepository.GetAll();
+        }
+
+
+        public async Task<Product> GetById(string id)
+        {
+            return await productRepository.GetById(id);
         }
 
         public async Task<Product> InsertAsync(ProductCreateDto productCreateDto)

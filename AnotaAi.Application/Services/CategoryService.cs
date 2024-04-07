@@ -1,4 +1,5 @@
-﻿using AnotaAi.Domain.Entities;
+﻿using AnotaAi.Domain.DTOs;
+using AnotaAi.Domain.Entities;
 using AnotaAi.Infraestructure.Repositories;
 
 namespace AnotaAi.Application.Services
@@ -7,7 +8,7 @@ namespace AnotaAi.Application.Services
     {
         Task<List<Category>> GetAllAsync();
         Task<Category> GetById(string id);
-        Task InsertAsync();
+        Task<Category> InsertAsync(CategoryCreateDto categoryCreateDto);
     }
 
     public class CategoryService : ICategoryService
@@ -29,11 +30,11 @@ namespace AnotaAi.Application.Services
             return await categoryRepository.GetById(id);
         }
 
-        public async Task InsertAsync()
+        public async Task<Category> InsertAsync(CategoryCreateDto categoryCreateDto)
         {
-
+            var category = new Category(categoryCreateDto);
+            await categoryRepository.InsertAsync(category);
+            return category;
         }
-
-
     }
 }
