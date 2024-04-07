@@ -20,7 +20,7 @@ namespace AnotaAi.Domain.Entities
         public decimal Price { get; set; }
 
         [BsonElement("category")]
-        public Category Category { get; set; }
+        public String Category { get; set; }
 
         [BsonElement("ownerId")]
         public string OwnerId { get; set; } = null!;
@@ -31,13 +31,13 @@ namespace AnotaAi.Domain.Entities
         }
 
 
-        public Product(ProductCreateDto productDto, Category category)
+        public Product(ProductCreateDto productDto)
         {
             Title = productDto.Title;
             Description = productDto.Description;
             Price = productDto.Price;
             OwnerId = productDto.OwnerId;
-            Category = category;
+            Category = productDto.CategoryId;
         }
 
         //public Product(ProductCreateDto productDto)
