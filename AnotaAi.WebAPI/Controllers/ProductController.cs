@@ -1,6 +1,5 @@
-﻿using AnotaAi.Domain.DTOs;
-using AnotaAi.Domain.Entities;
-using AnotaAi.Infraestructure.Repositories;
+﻿using AnotaAi.Application.Services;
+using AnotaAi.Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnotaAi.WebAPI.Controllers
@@ -8,26 +7,24 @@ namespace AnotaAi.WebAPI.Controllers
     [Route("[controller]")]
     public class ProductController : Controller
     {
-        private readonly IProductRepository productRepository;
+        private readonly IProductService productService;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IProductService productService)
         {
-            this.productRepository = productRepository;
+            this.productService = productService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await productRepository.GetAll());
+            return Ok(await productService.GetAllAsync());
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ProductCreateDto productCreateDto)
         {
-            var product = new Product(productCreateDto);
-
-            await productRepository.InsertAsync(product);
-            return Ok(product);
+            var result = await productService.InsertAsync(productCreateDto);
+            return Ok(result);
         }
     }
 }

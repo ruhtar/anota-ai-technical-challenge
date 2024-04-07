@@ -8,7 +8,7 @@
 
         public decimal Price { get; set; }
 
-        public CategoryCreateDto Category { get; set; } = null!;
+        public string CategoryId { get; set; } = null!;
 
         public string OwnerId { get; set; } = null!;
     }

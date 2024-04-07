@@ -1,4 +1,5 @@
 ﻿using AnotaAi.Domain.Entities;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace AnotaAi.Infraestructure.Repositories
@@ -25,7 +26,7 @@ namespace AnotaAi.Infraestructure.Repositories
 
         public async Task<Category> GetById(string id)
         {
-            var filter = Builders<Category>.Filter.Eq("_id", id);
+            var filter = Builders<Category>.Filter.Eq("_id", ObjectId.Parse(id));
             return await _categoryCollection.Find(filter).FirstOrDefaultAsync();
         }
 
