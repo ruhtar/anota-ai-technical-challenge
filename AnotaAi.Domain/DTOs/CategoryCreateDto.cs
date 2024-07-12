@@ -1,11 +1,10 @@
-﻿namespace AnotaAi.Domain.DTOs
+﻿namespace AnotaAi.Domain.DTOs;
+
+public class CategoryCreateDto
 {
-    public class CategoryCreateDto
-    {
-        public string Title { get; set; } = null!;
+    public required string Title { get; set; }
 
-        public string Description { get; set; } = null!;
+    public required string Description { get; set; }
 
-        public string OwnerId { get; set; } = null!;
-    }
+    public required string OwnerId { get; set; }
 }

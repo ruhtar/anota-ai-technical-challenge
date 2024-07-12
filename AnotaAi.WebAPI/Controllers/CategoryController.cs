@@ -18,13 +18,23 @@ namespace AnotaAi.WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] string id)
         {
-            return Ok(await categoryService.GetById(id));
+            var result = await categoryService.GetById(id);
+
+            if (result is null)
+                return NoContent();
+
+            return Ok(result);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await categoryService.GetAllAsync());
+            var result = await categoryService.GetAllAsync();
+
+            if (result is null)
+                return NoContent();
+
+            return Ok(result);
         }
 
         [HttpPost]

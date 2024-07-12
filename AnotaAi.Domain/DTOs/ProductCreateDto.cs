@@ -1,15 +1,14 @@
-﻿namespace AnotaAi.Domain.DTOs
+﻿namespace AnotaAi.Domain.DTOs;
+
+public class ProductCreateDto
 {
-    public class ProductCreateDto
-    {
-        public string Title { get; set; } = null!;
+    public required string Title { get; set; }
 
-        public string Description { get; set; } = null!;
+    public required string Description { get; set; }
 
-        public decimal Price { get; set; }
+    public decimal Price { get; set; }
 
-        public string CategoryId { get; set; } = null!;
+    public required string CategoryId { get; set; }
 
-        public string OwnerId { get; set; } = null!;
-    }
+    public required string OwnerId { get; set; }
 }

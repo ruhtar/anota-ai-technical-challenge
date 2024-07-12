@@ -2,43 +2,44 @@
 using AnotaAi.Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AnotaAi.WebAPI.Controllers
+namespace AnotaAi.WebAPI.Controllers;
+
+[Route("[controller]")]
+public class ProductController : Controller
 {
-    [Route("[controller]")]
-    public class ProductController : Controller
+    private readonly IProductService productService;
+
+    public ProductController(IProductService productService)
     {
-        private readonly IProductService productService;
+        this.productService = productService;
+    }
 
-        public ProductController(IProductService productService)
-        {
-            this.productService = productService;
-        }
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById([FromRoute] string id)
+    {
+        var result = await productService.GetById(id);
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById([FromRoute] string id)
-        {
-            return Ok(await productService.GetById(id));
-        }
+        if (result is null)
+            return NoContent();
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            return Ok(await productService.GetAllAsync());
-        }
+        return Ok(result);
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ProductCreateDto productCreateDto)
-        {
-            try
-            {
-                var result = await productService.InsertAsync(productCreateDto);
-                return Ok(result);
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var result = await productService.GetAllAsync();
 
-            }
-            catch (Exception ex)
-            {
-                return Problem(ex.Message);
-            }
-        }
+        if (result is null)
+            return NoContent();
+
+        return Ok(result);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] ProductCreateDto productCreateDto)
+    {
+        var result = await productService.InsertAsync(productCreateDto);
+        return Ok(result);
     }
 }
