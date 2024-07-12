@@ -1,5 +1,6 @@
 ﻿using AnotaAi.Application.Services;
 using AnotaAi.Domain.DTOs;
+using AnotaAi.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnotaAi.WebAPI.Controllers
@@ -38,9 +39,11 @@ namespace AnotaAi.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CategoryCreateDto categoryCreateDto)
+        public async Task<IActionResult> Create([FromBody] CategoryDto categoryCreateDto)
         {
-            return Ok(await categoryService.InsertAsync(categoryCreateDto));
+            var category = new Category(categoryCreateDto);
+
+            return Ok(await categoryService.InsertAsync(category));
         }
     }
 }

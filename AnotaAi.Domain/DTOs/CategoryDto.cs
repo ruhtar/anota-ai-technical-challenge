@@ -1,6 +1,6 @@
 ﻿namespace AnotaAi.Domain.DTOs;
 
-public class CategoryCreateDto
+public class CategoryDto
 {
     public required string Title { get; set; }
 

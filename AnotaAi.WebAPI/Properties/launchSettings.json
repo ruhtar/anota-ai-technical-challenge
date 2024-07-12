@@ -10,7 +10,7 @@
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5235"
     },
-    "https": {
+    "AnotaAi": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

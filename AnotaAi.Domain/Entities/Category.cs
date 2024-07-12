@@ -6,7 +6,6 @@ namespace AnotaAi.Domain.Entities;
 
 public class Category
 {
-    [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; }
 
@@ -21,7 +20,7 @@ public class Category
 
     public Category() { }
 
-    public Category(CategoryCreateDto categoryDto)
+    public Category(CategoryDto categoryDto)
     {
         Title = categoryDto.Title;
         Description = categoryDto.Description;
