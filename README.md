@@ -21,31 +21,27 @@
 
 ### Requisitos do Usuário
 
-- [ ] Registrar produto com dono
-  - [ ] Criar endpoint para registrar produto (title, description, price, category, owner ID)
-  - [ ] Validar dados de entrada
-  - [ ] Salvar produto no banco de dados
+- [X] Registrar produto com dono
+  - [X] Criar endpoint para registrar produto (title, description, price, category, owner ID)
+  - [X] Validar dados de entrada
+  - [X] Salvar produto no banco de dados
 
-- [ ] Registrar categoria com dono
-  - [ ] Criar endpoint para registrar categoria (title, description, owner ID)
-  - [ ] Validar dados de entrada
-  - [ ] Salvar categoria no banco de dados
+- [X] Registrar categoria com dono
+  - [X] Criar endpoint para registrar categoria (title, description, owner ID)
+  - [X] Validar dados de entrada
+  - [X] Salvar categoria no banco de dados
 
-- [ ] Associar produto a uma categoria
-  - [ ] Criar endpoint para associar produto a uma categoria
-  - [ ] Validar associação (produto só pode estar em uma categoria)
+- [X] Associar produto a uma categoria
+  - [X] Criar endpoint para associar produto a uma categoria
+  - [X] Validar associação (produto só pode estar em uma categoria)
 
-- [ ] Atualizar dados de produto ou categoria
-  - [ ] Criar endpoint para atualização de produto
-  - [ ] Criar endpoint para atualização de categoria
-  - [ ] Validar dados de entrada
-  - [ ] Atualizar dados no banco de dados
+- [x] Atualizar dados de produto ou categoria
+  - [X] Criar endpoint para atualização de produto
+  - [x] Criar endpoint para atualização de categoria
 
-- [ ] Deletar produto ou categoria do catálogo
-  - [ ] Criar endpoint para deletar produto
-  - [ ] Criar endpoint para deletar categoria
-  - [ ] Validar operação
-  - [ ] Remover dados do banco de dados
+- [X] Deletar produto ou categoria do catálogo
+  - [X] Criar endpoint para deletar produto
+  - [X] Criar endpoint para deletar categoria
 
 ### Considerações de Escalabilidade e Desempenho
 
