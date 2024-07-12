@@ -1,8 +1,10 @@
 ﻿namespace AnotaAi.Domain.DTOs;
 
-public record CategoryDto
+public record ProductDto
 (
     string Title,
     string Description,
+    decimal Price,
+    string CategoryId,
     string OwnerId
 );

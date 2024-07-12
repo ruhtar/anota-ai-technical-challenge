@@ -32,10 +32,13 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task UpdateAsync(string id, Category category)
     {
-        var filter = Builders<Category>.Filter.Eq(category => category.Id, id);
-        var update = Builders<Category>.Update.Set(category => category, category);
+        var filter = Builders<Category>.Filter.Eq(c => c.Id, id);
+        var updateBuilder = Builders<Category>.Update
+            .Set(c => c.Title, category.Title)
+            .Set(c => c.Description, category.Description)
+            .Set(c => c.OwnerId, category.OwnerId);
 
-        await _categoryCollection.UpdateOneAsync(filter, update);
+        await _categoryCollection.UpdateOneAsync(filter, updateBuilder);
     }
 
     public async Task<Category> GetByIdAsync(string id)

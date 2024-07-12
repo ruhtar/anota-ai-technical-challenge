@@ -24,7 +24,7 @@ public class Product
     [BsonElement("ownerId")]
     public string OwnerId { get; set; } = null!;
 
-    public Product(ProductCreateDto productDto)
+    public Product(ProductDto productDto)
     {
         Title = productDto.Title;
         Description = productDto.Description;

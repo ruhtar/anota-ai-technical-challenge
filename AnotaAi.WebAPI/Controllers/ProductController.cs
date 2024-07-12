@@ -1,6 +1,8 @@
 ﻿using AnotaAi.Application.Services;
 using AnotaAi.Domain.DTOs;
+using AnotaAi.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace AnotaAi.WebAPI.Controllers;
 
@@ -38,9 +40,27 @@ public class ProductController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] ProductCreateDto productCreateDto)
+    public async Task<IActionResult> Create([FromBody] ProductDto productCreateDto)
     {
-        var result = await productService.InsertAsync(productCreateDto);
-        return Ok(result);
+        var product = new Product(productCreateDto);
+        var result = await productService.InsertAsync(product);
+        return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+    }
+
+    //todo: make sure that only the required fileds can be passed to the endpoint (PATCH)
+    [HttpPatch]
+    public async Task<IActionResult> Update([Required] string id, [FromBody] ProductDto productCreateDto)
+    {
+        var product = new Product(productCreateDto);
+        await productService.UpdateAsync(id, product);
+        return Ok();
+    }
+
+    //TODO: WHAT SHOULD HAPPEN TO THE PRODUCTS OF A CATEGORY WHEN THE CATEGORY IS DELETED?
+    [HttpDelete]
+    public async Task<IActionResult> Delete([Required] string id)
+    {
+        await productService.DeleteAsync(id);
+        return Ok();
     }
 }

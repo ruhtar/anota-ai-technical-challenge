@@ -20,7 +20,7 @@ namespace AnotaAi.WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] string id)
         {
-            var result = await categoryService.GetById(id);
+            var result = await categoryService.GetByIdAsync(id);
 
             if (result is null)
                 return NoContent();
@@ -45,6 +45,13 @@ namespace AnotaAi.WebAPI.Controllers
             var category = new Category(categoryCreateDto);
 
             return Ok(await categoryService.InsertAsync(category));
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(string id)
+        {
+            await categoryService.DeleteAsync(id);
+            return Ok();
         }
     }
 }

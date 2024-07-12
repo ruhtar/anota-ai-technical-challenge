@@ -7,7 +7,7 @@ public interface ICategoryService
 {
     Task DeleteAsync(string id);
     Task<List<Category>> GetAllAsync();
-    Task<Category> GetById(string id);
+    Task<Category> GetByIdAsync(string id);
     Task<Category> InsertAsync(Category categoryCreateDto);
     Task UpdateAsync(string id, Category category);
 }
@@ -30,7 +30,7 @@ public class CategoryService : ICategoryService
 
     public async Task UpdateAsync(string id, Category category) => await categoryRepository.UpdateAsync(id, category);
 
-    public async Task<Category> GetById(string id) => await categoryRepository.GetByIdAsync(id);
+    public async Task<Category> GetByIdAsync(string id) => await categoryRepository.GetByIdAsync(id);
 
     public async Task DeleteAsync(string id) => await categoryRepository.DeleteAsync(id);
 }
