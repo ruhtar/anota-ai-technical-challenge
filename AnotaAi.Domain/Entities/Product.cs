@@ -24,8 +24,6 @@ public class Product
     [BsonElement("ownerId")]
     public string OwnerId { get; set; } = null!;
 
-    public Product() { }
-
     public Product(ProductCreateDto productDto)
     {
         Title = productDto.Title;

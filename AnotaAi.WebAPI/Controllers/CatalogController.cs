@@ -6,6 +6,6 @@ namespace AnotaAi.WebAPI.Controllers
     [Route("[controller]")]
     public class CatalogController : ControllerBase
     {
-        //TODO: RETORNAR JSON DE CATALOGO DO BANCO. O ENDPOINT É CHAMADO PELO CONSUMER QUE SALVA NO S3.
+        //Consider the product catalog as a JSON compilation of all available categories and items owned by a user.This way, the catalog search endpoint does not need to fetch information from the database.
     }
 }

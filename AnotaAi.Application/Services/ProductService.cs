@@ -22,15 +22,9 @@ public class ProductService : IProductService
         this.productRepository = productRepository;
     }
 
-    public async Task<List<Product>> GetAllAsync()
-    {
-        return await productRepository.GetAll();
-    }
+    public async Task<List<Product>> GetAllAsync() => await productRepository.GetAll();
 
-    public async Task<Product> GetById(string id)
-    {
-        return await productRepository.GetById(id);
-    }
+    public async Task<Product> GetById(string id) => await productRepository.GetById(id);
 
     public async Task<Product> InsertAsync(ProductCreateDto productCreateDto)
     {

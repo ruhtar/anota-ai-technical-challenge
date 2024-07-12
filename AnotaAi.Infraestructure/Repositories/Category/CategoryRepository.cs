@@ -6,6 +6,7 @@ namespace AnotaAi.Infraestructure.Repositories;
 
 public interface ICategoryRepository
 {
+    Task DeleteAsync(string id);
     Task<List<Category>> GetAllAsync();
     Task<Category> GetByIdAsync(string id);
     Task InsertAsync(Category category);
@@ -25,6 +26,10 @@ public class CategoryRepository : ICategoryRepository
         _categoryCollection = _database.GetCollection<Category>("categories");
     }
 
+    public async Task<List<Category>> GetAllAsync() => await _categoryCollection.Find(Builders<Category>.Filter.Empty).ToListAsync();
+
+    public async Task InsertAsync(Category category) => await _categoryCollection.InsertOneAsync(category);
+
     public async Task UpdateAsync(string id, Category category)
     {
         var filter = Builders<Category>.Filter.Eq(category => category.Id, id);
@@ -39,13 +44,9 @@ public class CategoryRepository : ICategoryRepository
         return await _categoryCollection.Find(filter).FirstOrDefaultAsync();
     }
 
-    public async Task<List<Category>> GetAllAsync()
+    public async Task DeleteAsync(string id)
     {
-        return await _categoryCollection.Find(Builders<Category>.Filter.Empty).ToListAsync();
-    }
-
-    public async Task InsertAsync(Category category)
-    {
-        await _categoryCollection.InsertOneAsync(category);
+        var filter = Builders<Category>.Filter.Eq("_id", ObjectId.Parse(id));
+        await _categoryCollection.DeleteOneAsync(filter);
     }
 }

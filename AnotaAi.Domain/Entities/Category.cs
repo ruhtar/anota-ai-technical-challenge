@@ -18,8 +18,6 @@ public class Category
     [BsonElement("ownerId")]
     public string OwnerId { get; set; } = null!;
 
-    public Category() { }
-
     public Category(CategoryDto categoryDto)
     {
         Title = categoryDto.Title;
