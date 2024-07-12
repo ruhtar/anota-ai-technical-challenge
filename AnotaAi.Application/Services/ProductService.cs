@@ -27,7 +27,6 @@ public class ProductService : IProductService
         return await productRepository.GetAll();
     }
 
-
     public async Task<Product> GetById(string id)
     {
         return await productRepository.GetById(id);

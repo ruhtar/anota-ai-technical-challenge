@@ -7,6 +7,7 @@ namespace AnotaAi.WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    //todo: todo endpoint de alteração(post,put,delete) de produto/categoria deve publicar um evento de alteração para alterar o catalogo no S3
     public class CategoryController : Controller
     {
         private readonly ICategoryService categoryService;

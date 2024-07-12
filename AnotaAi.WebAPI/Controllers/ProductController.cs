@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AnotaAi.WebAPI.Controllers;
 
 [Route("[controller]")]
+//todo: todo endpoint de alteração(post,put,delete) de produto/categoria deve publicar um evento de alteração para alterar o catalogo no S3
 public class ProductController : Controller
 {
     private readonly IProductService productService;
