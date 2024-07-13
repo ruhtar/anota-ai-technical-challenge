@@ -14,6 +14,10 @@ namespace AnotaAi.Consumer
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddSingleton<IConsumerService, ConsumerService>();
+            builder.Services.AddSingleton<ICatalogConsumerHostedService, CatalogConsumerHostedService>();
+            builder.Services.AddHostedService<CatalogConsumerHostedService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -23,12 +27,6 @@ namespace AnotaAi.Consumer
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-
-            app.MapControllers();
 
             app.Run();
         }

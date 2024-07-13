@@ -16,6 +16,7 @@ public class Program
         //TODO: maybe create a DependencyInjection class to organize better
         builder.Services.AddScoped<ICategoryService, CategoryService>();
         builder.Services.AddScoped<IProductService, ProductService>();
+        builder.Services.AddSingleton<ICatalogProducer, CatalogProducer>();
 
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
         builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();

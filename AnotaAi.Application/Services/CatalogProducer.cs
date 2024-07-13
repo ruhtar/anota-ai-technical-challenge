@@ -3,20 +3,18 @@ using System.Text;
 
 namespace AnotaAi.Application.Services;
 
-public interface ICatalogService
+public interface ICatalogProducer
 {
-    void PublishEvent(IEnumerable<string> ownerIds);
+    void PublishEvent(string ownerId);
 }
 
-public class CatalogService : ICatalogService
+public class CatalogProducer : ICatalogProducer
 {
     private const string QueueName = "catalog-queue";
     private const string ExchangeName = "catalog-topic";
     private const string RoutingKey = "catalog.*";
 
-    //todos
-    //API: APÓS A ATUALIZAÇÃO DE UM PRODUTO/CATEGORIA, DISPARAR UM EVENTO QUE INFORMA QUAL OWNER ID TEVE ALGUMA ATUALIZAÇÃO
-    public void PublishEvent(IEnumerable<string> ownerIds)
+    public void PublishEvent(string ownerId)
     {
         var factory = new ConnectionFactory()
         {
@@ -24,7 +22,7 @@ public class CatalogService : ICatalogService
             VirtualHost = "/",
             UserName = "guest",
             Password = "guest",
-            Uri = new Uri("http://localhost:15672")  //TODO: add this to some Options class
+            Uri = new Uri("amqp://guest:guest@localhost:5672")  //TODO: add this to some Options class
         };
 
         using var connection = factory.CreateConnection();
@@ -34,12 +32,11 @@ public class CatalogService : ICatalogService
         channel.QueueDeclare(QueueName, true, false, false, null);
         channel.QueueBind(QueueName, ExchangeName, RoutingKey, null);
 
-        var body = ownerIds.SelectMany(s => Encoding.UTF8.GetBytes(s)).ToArray();
+        var body = Encoding.UTF8.GetBytes(ownerId);
 
         channel.BasicPublish(ExchangeName, RoutingKey, null, body);
 
         channel.Close();
         connection.Close();
     }
-    //CONSUMER: RECEBE ESSE OWNER ID -> CONSULTA A BASE -> SALVA NO JSON A INFO DO OWNER
 }

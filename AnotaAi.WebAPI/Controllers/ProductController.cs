@@ -7,13 +7,12 @@ using System.ComponentModel.DataAnnotations;
 namespace AnotaAi.WebAPI.Controllers;
 
 [Route("[controller]")]
-//todo: todo endpoint de alteração(post,put,delete) de produto/categoria deve publicar um evento de alteração para alterar o catalogo no S3
 public class ProductController : Controller
 {
     private readonly IProductService productService;
-    private readonly ICatalogService catalogService;
+    private readonly ICatalogProducer catalogService;
 
-    public ProductController(IProductService productService, ICatalogService catalogService)
+    public ProductController(IProductService productService, ICatalogProducer catalogService)
     {
         this.productService = productService;
         this.catalogService = catalogService;
@@ -46,7 +45,7 @@ public class ProductController : Controller
     {
         var product = new Product(productCreateDto);
         var result = await productService.InsertAsync(product);
-        catalogService.PublishEvent([productCreateDto.OwnerId]);
+        catalogService.PublishEvent(productCreateDto.OwnerId);
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
 
@@ -56,7 +55,7 @@ public class ProductController : Controller
     {
         var product = new Product(productCreateDto);
         await productService.UpdateAsync(id, product);
-        catalogService.PublishEvent([productCreateDto.OwnerId]);
+        catalogService.PublishEvent(productCreateDto.OwnerId);
         return Ok();
     }
 
@@ -64,7 +63,7 @@ public class ProductController : Controller
     [HttpDelete]
     public async Task<IActionResult> Delete([Required] string id)
     {
-        catalogService.PublishEvent([id]);
+        catalogService.PublishEvent(id);
         await productService.DeleteAsync(id);
         return Ok();
     }
