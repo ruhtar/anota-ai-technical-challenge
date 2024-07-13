@@ -52,7 +52,7 @@ public class ConsumerService : IConsumerService, IDisposable
         {
             var body = ea.Body.ToArray();
             var ownerId = Encoding.UTF8.GetString(body);
-            await catalogUseCase.UpdateOwnerCatalog(ownerId, cancellationToken);
+            var isSucess = await catalogUseCase.UpdateOwnerCatalog(ownerId, cancellationToken);
 
             // copy or deserialise the payload
             // and process the message

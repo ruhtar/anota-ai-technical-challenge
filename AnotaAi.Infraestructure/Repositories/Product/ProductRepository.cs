@@ -8,7 +8,8 @@ namespace AnotaAi.Infraestructure.Repositories;
 public interface IProductRepository
 {
     Task DeleteAsync(string id, CancellationToken cancellationToken);
-    Task<List<Product>> GetAllAsync(CancellationToken cancellationToken);
+    Task<IEnumerable<Product>> GetAllAsync(CancellationToken cancellationToken);
+    Task<IEnumerable<Product>> GetAllByOwnerIdAsync(string ownerId, CancellationToken cancellationToken);
     Task<Product> GetByIdAsync(string id, CancellationToken cancellationToken);
     Task InsertAsync(Product product, CancellationToken cancellationToken);
     Task UpdateAsync(string id, Product product, CancellationToken cancellationToken);
@@ -27,16 +28,17 @@ public class ProductRepository : IProductRepository
         _productsCollection = _database.GetCollection<Product>("products");
     }
 
-
-    public async Task InsertAsync(Product product, CancellationToken cancellationToken)
+    public async Task<IEnumerable<Product>> GetAllByOwnerIdAsync(string ownerId, CancellationToken cancellationToken)
     {
+        var filter = Builders<Product>.Filter.Eq("ownerId", ownerId);
+        return await _productsCollection.Find(filter).ToListAsync(cancellationToken);
+    }
+
+    public async Task InsertAsync(Product product, CancellationToken cancellationToken) =>
         await _productsCollection.InsertOneAsync(product, null, cancellationToken);
-    }
 
-    public async Task<List<Product>> GetAllAsync(CancellationToken cancellationToken)
-    {
-        return await _productsCollection.Find(Builders<Product>.Filter.Empty).ToListAsync(cancellationToken);
-    }
+    public async Task<IEnumerable<Product>> GetAllAsync(CancellationToken cancellationToken) =>
+        await _productsCollection.Find(Builders<Product>.Filter.Empty).ToListAsync(cancellationToken);
 
     public async Task<Product> GetByIdAsync(string id, CancellationToken cancellationToken)
     {

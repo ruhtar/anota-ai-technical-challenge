@@ -6,8 +6,9 @@ namespace AnotaAi.Application.Services;
 public interface ICategoryService
 {
     Task DeleteAsync(string id, CancellationToken cancellationToken);
-    Task<List<Category>> GetAllAsync(CancellationToken cancellationToken);
+    Task<IEnumerable<Category>> GetAllAsync(CancellationToken cancellationToken);
     Task<Category> GetByIdAsync(string id, CancellationToken cancellationToken);
+    Task<IEnumerable<Category>> GetAllByOwnerIdAsync(string ownerId, CancellationToken cancellationToken);
     Task<Category> InsertAsync(Category categoryCreateDto, CancellationToken cancellationToken);
     Task UpdateAsync(string id, Category category, CancellationToken cancellationToken);
 }
@@ -26,7 +27,10 @@ public class CategoryService : ICategoryService
         return category;
     }
 
-    public async Task<List<Category>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<Category>> GetAllByOwnerIdAsync(string ownerId, CancellationToken cancellationToken)
+     => await categoryRepository.GetAllByOwnerIdAsync(ownerId, cancellationToken);
+
+    public async Task<IEnumerable<Category>> GetAllAsync(CancellationToken cancellationToken)
         => await categoryRepository.GetAllAsync(cancellationToken);
 
     public async Task UpdateAsync(string id, Category category, CancellationToken cancellationToken)

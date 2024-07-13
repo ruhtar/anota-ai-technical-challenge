@@ -9,10 +9,10 @@ namespace AnotaAi.Application.Services;
 public interface ICatalogService
 {
     Task<string?> GetCatalogJsonAsync(string ownerId, CancellationToken cancellationToken);
-    Task<bool> UpdateCatalogJsonAsync(string ownerId, string jsonContent, CancellationToken cancellationToken);
-    //Task UpdateCatalogJsonAsync(string ownerId, CancellationToken cancellationToken);
+    Task<bool> SaveToS3StorageAsync(string ownerId, string jsonContent, CancellationToken cancellationToken);
 }
 
+//TODO: CREATE A REPOSITORY TO THIS
 public class CatalogService : ICatalogService
 {
     private readonly string _bucketName;
@@ -52,7 +52,7 @@ public class CatalogService : ICatalogService
         }
     }
 
-    public async Task<bool> UpdateCatalogJsonAsync(string ownerId, string jsonContent, CancellationToken cancellationToken)
+    public async Task<bool> SaveToS3StorageAsync(string ownerId, string jsonContent, CancellationToken cancellationToken)
     {
         try
         {
@@ -72,26 +72,13 @@ public class CatalogService : ICatalogService
 
             return response.HttpStatusCode == System.Net.HttpStatusCode.OK;
         }
-        catch (AmazonS3Exception)
-        {
-            return false;
-        }
+        //catch (AmazonS3Exception)
+        //{
+        //    return false;
+        //}
         catch (Exception)
         {
             return false;
         }
     }
-
-    //public async Task UpdateCatalogJsonAsync(string ownerId, CancellationToken cancellationToken)
-    //{
-    //    var credentials = new BasicAWSCredentials(Environment.GetEnvironmentVariable("AWS_ACCESS_KEY"), Environment.GetEnvironmentVariable("AWS_SECRET_KEY"));
-
-    //    var s3Client = new AmazonS3Client(credentials, RegionEndpoint.SAEast1);
-
-    //    var fileTransferUtility = new TransferUtility(s3Client);
-
-    //    var filePath = "";
-
-    //    await fileTransferUtility.UploadAsync(filePath: filePath, bucketName: _bucketName, cancellationToken);
-    //}
 }

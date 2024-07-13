@@ -8,8 +8,9 @@ namespace AnotaAi.Infraestructure.Repositories;
 public interface ICategoryRepository
 {
     Task DeleteAsync(string id, CancellationToken cancellationToken);
-    Task<List<Category>> GetAllAsync(CancellationToken cancellationToken);
+    Task<IEnumerable<Category>> GetAllAsync(CancellationToken cancellationToken);
     Task<Category> GetByIdAsync(string id, CancellationToken cancellationToken);
+    Task<IEnumerable<Category>> GetAllByOwnerIdAsync(string ownerId, CancellationToken cancellationToken);
     Task InsertAsync(Category category, CancellationToken cancellationToken);
     Task UpdateAsync(string id, Category category, CancellationToken cancellationToken);
 }
@@ -27,7 +28,7 @@ public class CategoryRepository : ICategoryRepository
         _categoryCollection = _database.GetCollection<Category>("categories");
     }
 
-    public async Task<List<Category>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<Category>> GetAllAsync(CancellationToken cancellationToken)
         => await _categoryCollection.Find(Builders<Category>.Filter.Empty).ToListAsync(cancellationToken);
 
     public async Task InsertAsync(Category category, CancellationToken cancellationToken)
@@ -42,6 +43,12 @@ public class CategoryRepository : ICategoryRepository
             .Set(c => c.OwnerId, category.OwnerId);
 
         await _categoryCollection.UpdateOneAsync(filter, updateBuilder, null, cancellationToken);
+    }
+
+    public async Task<IEnumerable<Category>> GetAllByOwnerIdAsync(string ownerId, CancellationToken cancellationToken)
+    {
+        var filter = Builders<Category>.Filter.Eq("ownerId", ownerId);
+        return await _categoryCollection.Find(filter).ToListAsync(cancellationToken);
     }
 
     public async Task<Category> GetByIdAsync(string id, CancellationToken cancellationToken)

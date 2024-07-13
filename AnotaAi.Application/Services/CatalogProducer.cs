@@ -20,6 +20,7 @@ public class CatalogProducer : ICatalogProducer, IDisposable
 
     public CatalogProducer(IOptions<RabbitMQOptions> rabbitMQOptions)
     {
+        //TODO: ABSTRACT THIS
         var factory = new ConnectionFactory()
         {
             DispatchConsumersAsync = true,
@@ -32,14 +33,14 @@ public class CatalogProducer : ICatalogProducer, IDisposable
 
         connection = factory.CreateConnection();
         channel = connection.CreateModel();
+
+        channel.ExchangeDeclare(ExchangeName, ExchangeType.Topic, durable: true);
+        channel.QueueDeclare(QueueName, true, false, false, null);
+        channel.QueueBind(QueueName, ExchangeName, RoutingKey, null);
     }
 
     public void PublishEvent(string ownerId)
     {
-        channel.ExchangeDeclare(ExchangeName, ExchangeType.Topic, durable: true);
-        channel.QueueDeclare(QueueName, true, false, false, null);
-        channel.QueueBind(QueueName, ExchangeName, RoutingKey, null);
-
         var body = Encoding.UTF8.GetBytes(ownerId);
 
         channel.BasicPublish(ExchangeName, RoutingKey, null, body);
