@@ -19,9 +19,9 @@ public class ProductController : Controller
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById([FromRoute] string id)
+    public async Task<IActionResult> GetById([FromRoute] string id, CancellationToken cancellationToken)
     {
-        var result = await productService.GetById(id);
+        var result = await productService.GetById(id, cancellationToken);
 
         if (result is null)
             return NoContent();
@@ -30,9 +30,9 @@ public class ProductController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        var result = await productService.GetAllAsync();
+        var result = await productService.GetAllAsync(cancellationToken);
 
         if (result is null)
             return NoContent();
@@ -41,30 +41,30 @@ public class ProductController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] ProductDto productCreateDto)
+    public async Task<IActionResult> Create([FromBody] ProductDto productCreateDto, CancellationToken cancellationToken)
     {
         var product = new Product(productCreateDto);
-        var result = await productService.InsertAsync(product);
+        var result = await productService.InsertAsync(product, cancellationToken);
         catalogService.PublishEvent(productCreateDto.OwnerId);
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
 
     //todo: make sure that only the required fileds can be passed to the endpoint (PATCH)
     [HttpPatch]
-    public async Task<IActionResult> Update([Required] string id, [FromBody] ProductDto productCreateDto)
+    public async Task<IActionResult> Update([Required] string id, [FromBody] ProductDto productCreateDto, CancellationToken cancellationToken)
     {
         var product = new Product(productCreateDto);
-        await productService.UpdateAsync(id, product);
+        await productService.UpdateAsync(id, product, cancellationToken);
         catalogService.PublishEvent(productCreateDto.OwnerId);
         return Ok();
     }
 
     //TODO: WHAT SHOULD HAPPEN TO THE PRODUCTS OF A CATEGORY WHEN THE CATEGORY IS DELETED?
     [HttpDelete]
-    public async Task<IActionResult> Delete([Required] string id)
+    public async Task<IActionResult> Delete([Required] string id, CancellationToken cancellationToken)
     {
         catalogService.PublishEvent(id);
-        await productService.DeleteAsync(id);
+        await productService.DeleteAsync(id, cancellationToken);
         return Ok();
     }
 }

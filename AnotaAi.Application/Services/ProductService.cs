@@ -5,11 +5,11 @@ namespace AnotaAi.Application.Services;
 
 public interface IProductService
 {
-    Task DeleteAsync(string id);
-    Task<List<Product>> GetAllAsync();
-    Task<Product> GetById(string id);
-    Task<Product> InsertAsync(Product productCreateDto);
-    Task UpdateAsync(string id, Product product);
+    Task DeleteAsync(string id, CancellationToken cancellationToken);
+    Task<List<Product>> GetAllAsync(CancellationToken cancellationToken);
+    Task<Product> GetById(string id, CancellationToken cancellationToken);
+    Task<Product> InsertAsync(Product productCreateDto, CancellationToken cancellationToken);
+    Task UpdateAsync(string id, Product product, CancellationToken cancellationToken);
 }
 
 public class ProductService : IProductService
@@ -23,21 +23,21 @@ public class ProductService : IProductService
         this.productRepository = productRepository;
     }
 
-    public async Task DeleteAsync(string id) => await productRepository.DeleteAsync(id);
+    public async Task DeleteAsync(string id, CancellationToken cancellationToken) => await productRepository.DeleteAsync(id, cancellationToken);
 
-    public async Task<List<Product>> GetAllAsync() => await productRepository.GetAllAsync();
+    public async Task<List<Product>> GetAllAsync(CancellationToken cancellationToken) => await productRepository.GetAllAsync(cancellationToken);
 
-    public async Task<Product> GetById(string id) => await productRepository.GetByIdAsync(id);
+    public async Task<Product> GetById(string id, CancellationToken cancellationToken) => await productRepository.GetByIdAsync(id, cancellationToken);
 
-    public async Task<Product> InsertAsync(Product product)
+    public async Task<Product> InsertAsync(Product product, CancellationToken cancellationToken)
     {
-        var _ = await categoryService.GetByIdAsync(product.CategoryId) ?? throw new Exception("Category not found");
-        await productRepository.InsertAsync(product);
+        var _ = await categoryService.GetByIdAsync(product.CategoryId, cancellationToken) ?? throw new Exception("Category not found");
+        await productRepository.InsertAsync(product, cancellationToken);
         return product;
     }
-    public async Task UpdateAsync(string id, Product product)
+    public async Task UpdateAsync(string id, Product product, CancellationToken cancellationToken)
     {
-        var _ = await categoryService.GetByIdAsync(product.CategoryId) ?? throw new Exception("Category not found");
-        await productRepository.UpdateAsync(id, product);
+        var _ = await categoryService.GetByIdAsync(product.CategoryId, cancellationToken) ?? throw new Exception("Category not found");
+        await productRepository.UpdateAsync(id, product, cancellationToken);
     }
 }
