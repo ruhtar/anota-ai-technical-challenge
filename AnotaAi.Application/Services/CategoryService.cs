@@ -24,7 +24,6 @@ public class CategoryService : ICategoryService
     }
     public async Task<Category> InsertAsync(Category category, CancellationToken cancellationToken)
     {
-        //TODO: AVOID DOUBLE INSERTS
         await categoryRepository.InsertAsync(category, cancellationToken);
         return category;
     }

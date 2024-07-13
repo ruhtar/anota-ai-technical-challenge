@@ -36,8 +36,6 @@ public class ProductService : IProductService
 
     public async Task<Product> InsertAsync(Product product, CancellationToken cancellationToken)
     {
-        //TODO: AVOID DOUBLE INSERTS
-
         var _ = await categoryService.GetByIdAsync(product.CategoryId, cancellationToken) ?? throw new Exception("Category not found");
         await productRepository.InsertAsync(product, cancellationToken);
         return product;
