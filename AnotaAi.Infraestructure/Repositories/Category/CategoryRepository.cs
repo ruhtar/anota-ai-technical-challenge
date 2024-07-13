@@ -6,11 +6,11 @@ namespace AnotaAi.Infraestructure.Repositories;
 
 public interface ICategoryRepository
 {
-    Task DeleteAsync(string id);
-    Task<List<Category>> GetAllAsync();
-    Task<Category> GetByIdAsync(string id);
-    Task InsertAsync(Category category);
-    Task UpdateAsync(string id, Category category);
+    Task DeleteAsync(string id, CancellationToken cancellationToken);
+    Task<List<Category>> GetAllAsync(CancellationToken cancellationToken);
+    Task<Category> GetByIdAsync(string id, CancellationToken cancellationToken);
+    Task InsertAsync(Category category, CancellationToken cancellationToken);
+    Task UpdateAsync(string id, Category category, CancellationToken cancellationToken);
 }
 
 public class CategoryRepository : ICategoryRepository
@@ -26,11 +26,13 @@ public class CategoryRepository : ICategoryRepository
         _categoryCollection = _database.GetCollection<Category>("categories");
     }
 
-    public async Task<List<Category>> GetAllAsync() => await _categoryCollection.Find(Builders<Category>.Filter.Empty).ToListAsync();
+    public async Task<List<Category>> GetAllAsync(CancellationToken cancellationToken)
+        => await _categoryCollection.Find(Builders<Category>.Filter.Empty).ToListAsync(cancellationToken);
 
-    public async Task InsertAsync(Category category) => await _categoryCollection.InsertOneAsync(category);
+    public async Task InsertAsync(Category category, CancellationToken cancellationToken)
+        => await _categoryCollection.InsertOneAsync(category, null, cancellationToken);
 
-    public async Task UpdateAsync(string id, Category category)
+    public async Task UpdateAsync(string id, Category category, CancellationToken cancellationToken)
     {
         var filter = Builders<Category>.Filter.Eq(c => c.Id, id);
         var updateBuilder = Builders<Category>.Update
@@ -38,18 +40,18 @@ public class CategoryRepository : ICategoryRepository
             .Set(c => c.Description, category.Description)
             .Set(c => c.OwnerId, category.OwnerId);
 
-        await _categoryCollection.UpdateOneAsync(filter, updateBuilder);
+        await _categoryCollection.UpdateOneAsync(filter, updateBuilder, null, cancellationToken);
     }
 
-    public async Task<Category> GetByIdAsync(string id)
+    public async Task<Category> GetByIdAsync(string id, CancellationToken cancellationToken)
     {
         var filter = Builders<Category>.Filter.Eq("_id", ObjectId.Parse(id));
-        return await _categoryCollection.Find(filter).FirstOrDefaultAsync();
+        return await _categoryCollection.Find(filter).FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task DeleteAsync(string id)
+    public async Task DeleteAsync(string id, CancellationToken cancellationToken)
     {
         var filter = Builders<Category>.Filter.Eq("_id", ObjectId.Parse(id));
-        await _categoryCollection.DeleteOneAsync(filter);
+        await _categoryCollection.DeleteOneAsync(filter, cancellationToken);
     }
 }

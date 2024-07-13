@@ -52,14 +52,6 @@
 
 ## Integração com AWS
 
-- [ ] Publicar mudanças no catálogo para "catalog-emit" no AWS SQS
-  - [ ] Implementar função para publicar mensagem no SQS
-
-- [ ] Implementar consumer para ouvir mudanças no catálogo
-  - [ ] Criar consumidor que escuta mensagens do SQS
-  - [ ] Buscar catálogo do dono no banco de dados
-  - [ ] Gerar JSON do catálogo
-
 - [ ] Publicar catálogo JSON no AWS S3
   - [ ] Implementar função para enviar JSON ao bucket do S3
 

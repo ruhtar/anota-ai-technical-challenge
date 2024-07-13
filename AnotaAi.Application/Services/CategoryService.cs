@@ -5,11 +5,11 @@ namespace AnotaAi.Application.Services;
 
 public interface ICategoryService
 {
-    Task DeleteAsync(string id);
-    Task<List<Category>> GetAllAsync();
-    Task<Category> GetByIdAsync(string id);
-    Task<Category> InsertAsync(Category categoryCreateDto);
-    Task UpdateAsync(string id, Category category);
+    Task DeleteAsync(string id, CancellationToken cancellationToken);
+    Task<List<Category>> GetAllAsync(CancellationToken cancellationToken);
+    Task<Category> GetByIdAsync(string id, CancellationToken cancellationToken);
+    Task<Category> InsertAsync(Category categoryCreateDto, CancellationToken cancellationToken);
+    Task UpdateAsync(string id, Category category, CancellationToken cancellationToken);
 }
 
 public class CategoryService : ICategoryService
@@ -20,17 +20,21 @@ public class CategoryService : ICategoryService
     {
         this.categoryRepository = categoryRepository;
     }
-    public async Task<Category> InsertAsync(Category category)
+    public async Task<Category> InsertAsync(Category category, CancellationToken cancellationToken)
     {
-        await categoryRepository.InsertAsync(category);
+        await categoryRepository.InsertAsync(category, cancellationToken);
         return category;
     }
 
-    public async Task<List<Category>> GetAllAsync() => await categoryRepository.GetAllAsync();
+    public async Task<List<Category>> GetAllAsync(CancellationToken cancellationToken)
+        => await categoryRepository.GetAllAsync(cancellationToken);
 
-    public async Task UpdateAsync(string id, Category category) => await categoryRepository.UpdateAsync(id, category);
+    public async Task UpdateAsync(string id, Category category, CancellationToken cancellationToken)
+        => await categoryRepository.UpdateAsync(id, category, cancellationToken);
 
-    public async Task<Category> GetByIdAsync(string id) => await categoryRepository.GetByIdAsync(id);
+    public async Task<Category> GetByIdAsync(string id, CancellationToken cancellationToken)
+        => await categoryRepository.GetByIdAsync(id, cancellationToken);
 
-    public async Task DeleteAsync(string id) => await categoryRepository.DeleteAsync(id);
+    public async Task DeleteAsync(string id, CancellationToken cancellationToken)
+        => await categoryRepository.DeleteAsync(id, cancellationToken);
 }

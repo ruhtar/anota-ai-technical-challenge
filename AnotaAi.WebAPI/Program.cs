@@ -17,6 +17,7 @@ public class Program
         builder.Services.AddScoped<ICategoryService, CategoryService>();
         builder.Services.AddScoped<IProductService, ProductService>();
         builder.Services.AddSingleton<ICatalogProducer, CatalogProducer>();
+        builder.Services.AddSingleton<ICatalogService, CatalogService>();
 
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
         builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
