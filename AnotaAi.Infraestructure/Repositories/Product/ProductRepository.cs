@@ -1,4 +1,5 @@
 ﻿using AnotaAi.Domain.Entities;
+using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -19,9 +20,9 @@ public class ProductRepository : IProductRepository
     private readonly IMongoDatabase _database;
     private readonly IMongoCollection<Product> _productsCollection;
 
-    public ProductRepository()
+    public ProductRepository(IConfiguration configuration)
     {
-        _client = new MongoClient("mongodb://localhost:27017"); //TODO: alterar
+        _client = new MongoClient(configuration.GetConnectionString("Mongo"));
         _database = _client.GetDatabase("catalog");
         _productsCollection = _database.GetCollection<Product>("products");
     }

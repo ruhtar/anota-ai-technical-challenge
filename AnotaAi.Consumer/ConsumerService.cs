@@ -1,4 +1,6 @@
-﻿using RabbitMQ.Client;
+﻿using AnotaAi.Consumer.Options;
+using Microsoft.Extensions.Options;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 
@@ -15,16 +17,16 @@ public class ConsumerService : IConsumerService, IDisposable
     private readonly IModel channel;
     private readonly IConnection connection;
 
-    public ConsumerService()
+    public ConsumerService(IOptions<RabbitMQOptions> rabbitMQOptions)
     {
         var factory = new ConnectionFactory()
         {
             DispatchConsumersAsync = true,
-            HostName = "localhost",
-            VirtualHost = "/",
-            UserName = "guest",
-            Password = "guest",
-            Uri = new Uri("amqp://guest:guest@localhost:5672")  //TODO: add this to some Options class
+            HostName = rabbitMQOptions.Value.HostName,
+            VirtualHost = rabbitMQOptions.Value.VirtualHost,
+            UserName = rabbitMQOptions.Value.UserName,
+            Password = rabbitMQOptions.Value.Password,
+            Uri = rabbitMQOptions.Value.Uri
         };
 
         connection = factory.CreateConnection();

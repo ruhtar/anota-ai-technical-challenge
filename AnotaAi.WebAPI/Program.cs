@@ -1,5 +1,6 @@
 using AnotaAi.Application.Services;
 using AnotaAi.Infraestructure.Repositories;
+using Microsoft.OpenApi.Models;
 
 namespace AnotaAi.WebAPI;
 
@@ -11,7 +12,6 @@ public class Program
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
 
         //TODO: maybe create a DependencyInjection class to organize better
         builder.Services.AddScoped<ICategoryService, CategoryService>();
@@ -22,6 +22,11 @@ public class Program
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
         builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
+        builder.Services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "AnotaAi API", Version = "v1" });
+        });
+
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())
@@ -31,8 +36,6 @@ public class Program
         }
 
         app.UseHttpsRedirection();
-
-        app.UseAuthorization();
 
         app.MapControllers();
 
