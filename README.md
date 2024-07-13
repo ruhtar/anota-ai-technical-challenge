@@ -7,9 +7,6 @@
   - [X] Definir banco de dados (e.g., PostgreSQL, MongoDB)
   - [X] Definir mensageria PubSub (SQS, RabbitMQ)
 
-## Desenvolvimento
-
-
 ### Banco de Dados
 
 - [X] Configurar conexão com banco de dados

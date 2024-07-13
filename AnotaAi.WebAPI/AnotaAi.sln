@@ -5,13 +5,15 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnotaAi.WebAPI", "AnotaAi.WebAPI.csproj", "{FFA386FA-7F2B-49DB-947C-BAEF428AEDA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnotaAi.Application", "..\AnotaAi.Application\AnotaAi.Application.csproj", "{22AB859D-2E93-46D1-A487-46BFCA82BE0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnotaAi.Application", "..\AnotaAi.Application\AnotaAi.Application.csproj", "{22AB859D-2E93-46D1-A487-46BFCA82BE0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnotaAi.Infraestructure", "..\AnotaAi.Infraestructure\AnotaAi.Infraestructure.csproj", "{0CB9C00C-A16D-4BD4-9442-232592A2C07C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnotaAi.Infraestructure", "..\AnotaAi.Infraestructure\AnotaAi.Infraestructure.csproj", "{0CB9C00C-A16D-4BD4-9442-232592A2C07C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnotaAi.Domain", "..\AnotaAi.Domain\AnotaAi.Domain.csproj", "{7D777B10-9B2D-4204-9234-EDEA9EBAB884}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnotaAi.Domain", "..\AnotaAi.Domain\AnotaAi.Domain.csproj", "{7D777B10-9B2D-4204-9234-EDEA9EBAB884}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnotaAi.Tests", "..\AnotaAi.Tests\AnotaAi.Tests.csproj", "{3353B125-61A9-4670-BE11-456C9F656E66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnotaAi.Tests", "..\AnotaAi.Tests\AnotaAi.Tests.csproj", "{3353B125-61A9-4670-BE11-456C9F656E66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnotaAi.Consumer", "..\AnotaAi.Consumer\AnotaAi.Consumer.csproj", "{BAF7F3A4-8EED-4B7B-A198-C850E935DDC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{3353B125-61A9-4670-BE11-456C9F656E66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3353B125-61A9-4670-BE11-456C9F656E66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3353B125-61A9-4670-BE11-456C9F656E66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAF7F3A4-8EED-4B7B-A198-C850E935DDC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAF7F3A4-8EED-4B7B-A198-C850E935DDC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAF7F3A4-8EED-4B7B-A198-C850E935DDC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAF7F3A4-8EED-4B7B-A198-C850E935DDC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

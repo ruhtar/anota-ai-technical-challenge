@@ -2,6 +2,7 @@
 using AnotaAi.Domain.DTOs;
 using AnotaAi.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace AnotaAi.WebAPI.Controllers
 {
@@ -11,10 +12,12 @@ namespace AnotaAi.WebAPI.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryService categoryService;
+        private readonly ICatalogService catalogService;
 
-        public CategoryController(ICategoryService categoryService)
+        public CategoryController(ICategoryService categoryService, ICatalogService catalogService)
         {
             this.categoryService = categoryService;
+            this.catalogService = catalogService;
         }
 
         [HttpGet("{id}")]
@@ -43,7 +46,7 @@ namespace AnotaAi.WebAPI.Controllers
         public async Task<IActionResult> Create([FromBody] CategoryDto categoryCreateDto)
         {
             var category = new Category(categoryCreateDto);
-
+            catalogService.PublishEvent([categoryCreateDto.OwnerId]);
             return Ok(await categoryService.InsertAsync(category));
         }
 
@@ -51,6 +54,16 @@ namespace AnotaAi.WebAPI.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             await categoryService.DeleteAsync(id);
+            catalogService.PublishEvent([id]);
+            return Ok();
+        }
+
+        [HttpPatch]
+        public async Task<IActionResult> Update([Required] string id, [FromBody] CategoryDto categoryDto)
+        {
+            var category = new Category(categoryDto);
+            await categoryService.UpdateAsync(id, category);
+            catalogService.PublishEvent([categoryDto.OwnerId]);
             return Ok();
         }
     }

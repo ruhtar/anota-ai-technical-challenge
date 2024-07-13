@@ -11,10 +11,12 @@ namespace AnotaAi.WebAPI.Controllers;
 public class ProductController : Controller
 {
     private readonly IProductService productService;
+    private readonly ICatalogService catalogService;
 
-    public ProductController(IProductService productService)
+    public ProductController(IProductService productService, ICatalogService catalogService)
     {
         this.productService = productService;
+        this.catalogService = catalogService;
     }
 
     [HttpGet("{id}")]
@@ -44,6 +46,7 @@ public class ProductController : Controller
     {
         var product = new Product(productCreateDto);
         var result = await productService.InsertAsync(product);
+        catalogService.PublishEvent([productCreateDto.OwnerId]);
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
 
@@ -53,6 +56,7 @@ public class ProductController : Controller
     {
         var product = new Product(productCreateDto);
         await productService.UpdateAsync(id, product);
+        catalogService.PublishEvent([productCreateDto.OwnerId]);
         return Ok();
     }
 
@@ -60,6 +64,7 @@ public class ProductController : Controller
     [HttpDelete]
     public async Task<IActionResult> Delete([Required] string id)
     {
+        catalogService.PublishEvent([id]);
         await productService.DeleteAsync(id);
         return Ok();
     }
