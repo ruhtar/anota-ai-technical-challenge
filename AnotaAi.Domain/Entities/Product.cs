@@ -24,12 +24,12 @@ public class Product
     [BsonElement("ownerId")]
     public string OwnerId { get; set; } = null!;
 
-    public Product(ProductDto productDto)
+    public Product(CreateProductDto productDto)
     {
         Title = productDto.Title;
         Description = productDto.Description;
-        Price = (decimal)productDto.Price;
-        OwnerId = productDto.OwnerId;
+        Price = productDto.Price;
         CategoryId = productDto.CategoryId;
+        OwnerId = productDto.OwnerId;
     }
 }

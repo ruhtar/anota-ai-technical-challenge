@@ -1,4 +1,5 @@
-﻿using AnotaAi.Domain.Entities;
+﻿using AnotaAi.Domain.DTOs;
+using AnotaAi.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -12,7 +13,7 @@ public interface ICategoryRepository
     Task<Category> GetByIdAsync(string id, CancellationToken cancellationToken);
     Task<IEnumerable<Category>> GetAllByOwnerIdAsync(string ownerId, CancellationToken cancellationToken);
     Task InsertAsync(Category category, CancellationToken cancellationToken);
-    Task UpdateAsync(string id, Category category, CancellationToken cancellationToken);
+    Task<Category?> UpdateAsync(string id, UpdateCategoryDto category, CancellationToken cancellationToken);
 }
 
 public class CategoryRepository : ICategoryRepository
@@ -34,15 +35,19 @@ public class CategoryRepository : ICategoryRepository
     public async Task InsertAsync(Category category, CancellationToken cancellationToken)
         => await _categoryCollection.InsertOneAsync(category, null, cancellationToken);
 
-    public async Task UpdateAsync(string id, Category category, CancellationToken cancellationToken)
+    public async Task<Category?> UpdateAsync(string id, UpdateCategoryDto category, CancellationToken cancellationToken)
     {
         var filter = Builders<Category>.Filter.Eq(c => c.Id, id);
         var updateBuilder = Builders<Category>.Update
             .Set(c => c.Title, category.Title)
-            .Set(c => c.Description, category.Description)
-            .Set(c => c.OwnerId, category.OwnerId);
+            .Set(c => c.Description, category.Description);
 
-        await _categoryCollection.UpdateOneAsync(filter, updateBuilder, null, cancellationToken);
+        var options = new FindOneAndUpdateOptions<Category>
+        {
+            ReturnDocument = ReturnDocument.After
+        };
+
+        return await _categoryCollection.FindOneAndUpdateAsync(filter, updateBuilder, options, cancellationToken);
     }
 
     public async Task<IEnumerable<Category>> GetAllByOwnerIdAsync(string ownerId, CancellationToken cancellationToken)

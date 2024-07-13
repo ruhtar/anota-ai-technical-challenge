@@ -1,4 +1,5 @@
-﻿using AnotaAi.Domain.Entities;
+﻿using AnotaAi.Domain.DTOs;
+using AnotaAi.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -12,7 +13,7 @@ public interface IProductRepository
     Task<IEnumerable<Product>> GetAllByOwnerIdAsync(string ownerId, CancellationToken cancellationToken);
     Task<Product> GetByIdAsync(string id, CancellationToken cancellationToken);
     Task InsertAsync(Product product, CancellationToken cancellationToken);
-    Task UpdateAsync(string id, Product product, CancellationToken cancellationToken);
+    Task<Product?> UpdateAsync(string id, UpdateProductDto product, CancellationToken cancellationToken);
 }
 
 public class ProductRepository : IProductRepository
@@ -46,7 +47,7 @@ public class ProductRepository : IProductRepository
         return await _productsCollection.Find(filter).FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task UpdateAsync(string id, Product product, CancellationToken cancellationToken)
+    public async Task<Product?> UpdateAsync(string id, UpdateProductDto product, CancellationToken cancellationToken)
     {
         var filter = Builders<Product>.Filter.Eq("_id", ObjectId.Parse(id));
 
@@ -65,12 +66,14 @@ public class ProductRepository : IProductRepository
         if (!string.IsNullOrEmpty(product.CategoryId))
             updateDefinitions.Add(updateBuilder.Set(p => p.CategoryId, product.CategoryId));
 
-        if (!string.IsNullOrEmpty(product.OwnerId))
-            updateDefinitions.Add(updateBuilder.Set(p => p.OwnerId, product.OwnerId));
+        var combinedUpdate = updateBuilder.Combine(updateDefinitions);
 
-        var update = updateBuilder.Combine(updateDefinitions);
+        var options = new FindOneAndUpdateOptions<Product>
+        {
+            ReturnDocument = ReturnDocument.After
+        };
 
-        await _productsCollection.UpdateOneAsync(filter, update, null, cancellationToken);
+        return await _productsCollection.FindOneAndUpdateAsync(filter, combinedUpdate, options, cancellationToken);
     }
 
     public async Task DeleteAsync(string id, CancellationToken cancellationToken)

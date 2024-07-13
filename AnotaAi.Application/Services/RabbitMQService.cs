@@ -9,9 +9,11 @@ public interface IRabbitMQService
     IModel CreateChannel();
 }
 
-public class RabbitMQService : IRabbitMQService
+public class RabbitMQService : IRabbitMQService, IDisposable
 {
     private readonly ConnectionFactory _factory;
+    private IConnection _connection;
+    private IModel _channel;
 
     public RabbitMQService(IOptions<RabbitMQOptions> rabbitMQOptions)
     {
@@ -28,7 +30,18 @@ public class RabbitMQService : IRabbitMQService
 
     public IModel CreateChannel()
     {
-        var connection = _factory.CreateConnection();
-        return connection.CreateModel();
+        _connection = _factory.CreateConnection();
+        _channel = _connection.CreateModel();
+        return _channel;
+    }
+    public void Dispose()
+    {
+        if (_channel.IsOpen)
+            _channel.Close();
+
+        if (_connection.IsOpen)
+            _connection.Close();
+
+        GC.SuppressFinalize(this); //IDE recommends this. Learn more about this: https://learn.microsoft.com/pt-br/dotnet/fundamentals/code-analysis/quality-rules/ca1816
     }
 }

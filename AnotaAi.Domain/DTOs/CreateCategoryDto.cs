@@ -1,6 +1,6 @@
 ﻿namespace AnotaAi.Domain.DTOs;
 
-public record CategoryDto
+public record CreateCategoryDto
 (
     string Title,
     string Description,

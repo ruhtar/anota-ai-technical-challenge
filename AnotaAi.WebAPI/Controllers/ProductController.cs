@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AnotaAi.WebAPI.Controllers;
 
+[ApiController]
 [Route("[controller]")]
 public class ProductController : Controller
 {
@@ -41,21 +42,23 @@ public class ProductController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] ProductDto productCreateDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBody] CreateProductDto createProductDto, CancellationToken cancellationToken)
     {
-        var product = new Product(productCreateDto);
+        var product = new Product(createProductDto);
         var result = await productService.InsertAsync(product, cancellationToken);
-        catalogService.PublishEvent(productCreateDto.OwnerId);
+        catalogService.PublishEvent(createProductDto.OwnerId);
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
 
-    //todo: make sure that only the required fileds can be passed to the endpoint (PATCH)
     [HttpPatch]
-    public async Task<IActionResult> Update([Required] string id, [FromBody] ProductDto productCreateDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Update([Required] string id, [FromBody] UpdateProductDto productDto, CancellationToken cancellationToken)
     {
-        var product = new Product(productCreateDto);
-        await productService.UpdateAsync(id, product, cancellationToken);
-        catalogService.PublishEvent(productCreateDto.OwnerId);
+        var product = await productService.UpdateAsync(id, productDto, cancellationToken);
+
+        if (product is null)
+            return Problem();
+
+        catalogService.PublishEvent(product.OwnerId);
         return Ok();
     }
 

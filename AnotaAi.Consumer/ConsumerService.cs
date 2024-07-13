@@ -11,13 +11,12 @@ public interface IConsumerService
     Task ReadMessages(CancellationToken cancellationToken);
 }
 
-public class ConsumerService : IConsumerService, IDisposable
+public class ConsumerService : IConsumerService
 {
     private const string QueueName = "catalog-queue";
     private const string ExchangeName = "catalog-topic";
     private const string RoutingKey = "catalog.*";
     private readonly IModel channel;
-    private readonly IConnection connection;
     private readonly ICatalogUseCase catalogUseCase;
 
     public ConsumerService(ICatalogUseCase catalogUseCase, IRabbitMQService rabbitMQService)
@@ -45,16 +44,5 @@ public class ConsumerService : IConsumerService, IDisposable
         };
         string consumerTag = channel.BasicConsume(QueueName, false, consumer);
         await Task.CompletedTask;
-    }
-
-    public void Dispose()
-    {
-        if (channel.IsOpen)
-            channel.Close();
-
-        if (connection.IsOpen)
-            connection.Close();
-
-        GC.SuppressFinalize(this); //IDE recommends this. Learn more about this: https://learn.microsoft.com/pt-br/dotnet/fundamentals/code-analysis/quality-rules/ca1816
     }
 }

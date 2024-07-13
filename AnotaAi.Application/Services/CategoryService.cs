@@ -1,4 +1,5 @@
-﻿using AnotaAi.Domain.Entities;
+﻿using AnotaAi.Domain.DTOs;
+using AnotaAi.Domain.Entities;
 using AnotaAi.Infraestructure.Repositories;
 
 namespace AnotaAi.Application.Services;
@@ -10,7 +11,7 @@ public interface ICategoryService
     Task<Category> GetByIdAsync(string id, CancellationToken cancellationToken);
     Task<IEnumerable<Category>> GetAllByOwnerIdAsync(string ownerId, CancellationToken cancellationToken);
     Task<Category> InsertAsync(Category categoryCreateDto, CancellationToken cancellationToken);
-    Task UpdateAsync(string id, Category category, CancellationToken cancellationToken);
+    Task<Category?> UpdateAsync(string id, UpdateCategoryDto category, CancellationToken cancellationToken);
 }
 
 public class CategoryService : ICategoryService
@@ -33,7 +34,7 @@ public class CategoryService : ICategoryService
     public async Task<IEnumerable<Category>> GetAllAsync(CancellationToken cancellationToken)
         => await categoryRepository.GetAllAsync(cancellationToken);
 
-    public async Task UpdateAsync(string id, Category category, CancellationToken cancellationToken)
+    public async Task<Category?> UpdateAsync(string id, UpdateCategoryDto category, CancellationToken cancellationToken)
         => await categoryRepository.UpdateAsync(id, category, cancellationToken);
 
     public async Task<Category> GetByIdAsync(string id, CancellationToken cancellationToken)

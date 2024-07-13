@@ -42,7 +42,7 @@ public class CategoryController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CategoryDto categoryCreateDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBody] CreateCategoryDto categoryCreateDto, CancellationToken cancellationToken)
     {
         var category = new Category(categoryCreateDto);
         var result = await categoryService.InsertAsync(category, cancellationToken);
@@ -59,11 +59,14 @@ public class CategoryController : Controller
     }
 
     [HttpPatch]
-    public async Task<IActionResult> Update([Required] string id, [FromBody] CategoryDto categoryDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Update([Required] string id, [FromBody] UpdateCategoryDto categoryDto, CancellationToken cancellationToken)
     {
-        var category = new Category(categoryDto);
-        await categoryService.UpdateAsync(id, category, cancellationToken);
-        catalogService.PublishEvent(categoryDto.OwnerId);
+        var category = await categoryService.UpdateAsync(id, categoryDto, cancellationToken);
+
+        if (category is null)
+            return Problem();
+
+        catalogService.PublishEvent(category.OwnerId);
         return Ok();
     }
 }

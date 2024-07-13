@@ -1,4 +1,5 @@
-﻿using AnotaAi.Domain.Entities;
+﻿using AnotaAi.Domain.DTOs;
+using AnotaAi.Domain.Entities;
 using AnotaAi.Infraestructure.Repositories;
 
 namespace AnotaAi.Application.Services;
@@ -10,7 +11,7 @@ public interface IProductService
     Task<IEnumerable<Product>> GetAllByOwnerIdAsync(string ownerId, CancellationToken cancellationToken);
     Task<Product> GetById(string id, CancellationToken cancellationToken);
     Task<Product> InsertAsync(Product productCreateDto, CancellationToken cancellationToken);
-    Task UpdateAsync(string id, Product product, CancellationToken cancellationToken);
+    Task<Product?> UpdateAsync(string id, UpdateProductDto product, CancellationToken cancellationToken);
 }
 
 public class ProductService : IProductService
@@ -39,9 +40,13 @@ public class ProductService : IProductService
         await productRepository.InsertAsync(product, cancellationToken);
         return product;
     }
-    public async Task UpdateAsync(string id, Product product, CancellationToken cancellationToken)
+    public async Task<Product?> UpdateAsync(string id, UpdateProductDto product, CancellationToken cancellationToken)
     {
-        var _ = await categoryService.GetByIdAsync(product.CategoryId, cancellationToken) ?? throw new Exception("Category not found");
-        await productRepository.UpdateAsync(id, product, cancellationToken);
+        if (!string.IsNullOrWhiteSpace(product.CategoryId))
+        {
+            var _ = await categoryService.GetByIdAsync(product.CategoryId, cancellationToken) ?? throw new Exception("Category not found");
+        }
+
+        return await productRepository.UpdateAsync(id, product, cancellationToken);
     }
 }
