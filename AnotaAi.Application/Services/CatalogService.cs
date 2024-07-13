@@ -2,6 +2,7 @@
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
+using Amazon.S3.Transfer;
 using Microsoft.Extensions.Configuration;
 
 namespace AnotaAi.Application.Services;
@@ -9,6 +10,8 @@ namespace AnotaAi.Application.Services;
 public interface ICatalogService
 {
     Task<string> GetCatalogJsonAsync(CancellationToken cancellationToken);
+    Task<string> UpdateCatalogJsonAsync(string json, CancellationToken cancellationToken);
+    Task UpdateCatalogJsonAsync(CancellationToken cancellationToken);
 }
 
 public class CatalogService : ICatalogService
@@ -39,5 +42,19 @@ public class CatalogService : ICatalogService
         using var reader = new StreamReader(response.ResponseStream);
 
         return await reader.ReadToEndAsync(cancellationToken);
+    }
+
+
+    public async Task UpdateCatalogJsonAsync(CancellationToken cancellationToken)
+    {
+        var credentials = new BasicAWSCredentials(Environment.GetEnvironmentVariable("AWS_ACCESS_KEY"), Environment.GetEnvironmentVariable("AWS_SECRET_KEY"));
+
+        var s3Client = new AmazonS3Client(credentials, RegionEndpoint.SAEast1);
+
+        var fileTransferUtility = new TransferUtility(s3Client);
+
+        var filePath = "";
+
+        await fileTransferUtility.UploadAsync(filePath: filePath, bucketName: _bucketName, cancellationToken);
     }
 }
