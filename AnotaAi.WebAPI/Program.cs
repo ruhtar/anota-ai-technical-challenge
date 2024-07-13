@@ -1,4 +1,5 @@
 using AnotaAi.Application.Services;
+using AnotaAi.Domain.Options;
 using AnotaAi.Infraestructure.Repositories;
 using Microsoft.OpenApi.Models;
 
@@ -14,6 +15,8 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
 
         //TODO: maybe create a DependencyInjection class to organize better
+        builder.Services.Configure<RabbitMQOptions>(builder.Configuration.GetSection("RabbitMQOptions"));
+
         builder.Services.AddScoped<ICategoryService, CategoryService>();
         builder.Services.AddScoped<IProductService, ProductService>();
         builder.Services.AddSingleton<ICatalogProducer, CatalogProducer>();

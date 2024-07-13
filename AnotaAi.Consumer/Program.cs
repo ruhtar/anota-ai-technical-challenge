@@ -1,5 +1,4 @@
-
-using AnotaAi.Consumer.Options;
+using AnotaAi.Domain.Options;
 
 namespace AnotaAi.Consumer;
 

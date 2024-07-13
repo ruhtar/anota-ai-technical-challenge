@@ -1,4 +1,4 @@
-﻿using AnotaAi.Consumer.Options;
+﻿using AnotaAi.Domain.Options;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
