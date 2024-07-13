@@ -48,14 +48,27 @@ public class ProductRepository : IProductRepository
     {
         var filter = Builders<Product>.Filter.Eq("_id", ObjectId.Parse(id));
 
-        var updateBuilder = Builders<Product>.Update
-            .Set(p => p.Description, product.Description)
-            .Set(p => p.Title, product.Title)
-            .Set(p => p.Price, product.Price)
-            .Set(p => p.CategoryId, product.CategoryId)
-            .Set(p => p.OwnerId, product.OwnerId);
+        var updateBuilder = Builders<Product>.Update;
+        var updateDefinitions = new List<UpdateDefinition<Product>>();
 
-        await _productsCollection.UpdateOneAsync(filter, updateBuilder, null, cancellationToken);
+        if (!string.IsNullOrEmpty(product.Description))
+            updateDefinitions.Add(updateBuilder.Set(p => p.Description, product.Description));
+
+        if (!string.IsNullOrEmpty(product.Title))
+            updateDefinitions.Add(updateBuilder.Set(p => p.Title, product.Title));
+
+        if (product.Price != null)
+            updateDefinitions.Add(updateBuilder.Set(p => p.Price, product.Price));
+
+        if (!string.IsNullOrEmpty(product.CategoryId))
+            updateDefinitions.Add(updateBuilder.Set(p => p.CategoryId, product.CategoryId));
+
+        if (!string.IsNullOrEmpty(product.OwnerId))
+            updateDefinitions.Add(updateBuilder.Set(p => p.OwnerId, product.OwnerId));
+
+        var update = updateBuilder.Combine(updateDefinitions);
+
+        await _productsCollection.UpdateOneAsync(filter, update, null, cancellationToken);
     }
 
     public async Task DeleteAsync(string id, CancellationToken cancellationToken)

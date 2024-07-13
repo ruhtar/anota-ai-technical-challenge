@@ -1,3 +1,5 @@
+using AnotaAi.Application.Services;
+using AnotaAi.Application.UseCases;
 using AnotaAi.Domain.Options;
 
 namespace AnotaAi.Consumer;
@@ -9,6 +11,9 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.Configure<RabbitMQOptions>(builder.Configuration.GetSection("RabbitMQOptions"));
+
+        builder.Services.AddSingleton<ICatalogService, CatalogService>();
+        builder.Services.AddSingleton<ICatalogUseCase, CatalogUseCase>();
         builder.Services.AddSingleton<IConsumerService, ConsumerService>();
         builder.Services.AddSingleton<ICatalogConsumerHostedService, CatalogConsumerHostedService>();
         builder.Services.AddHostedService<CatalogConsumerHostedService>();

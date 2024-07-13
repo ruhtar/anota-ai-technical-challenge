@@ -28,7 +28,7 @@ public class Product
     {
         Title = productDto.Title;
         Description = productDto.Description;
-        Price = productDto.Price;
+        Price = (decimal)productDto.Price;
         OwnerId = productDto.OwnerId;
         CategoryId = productDto.CategoryId;
     }

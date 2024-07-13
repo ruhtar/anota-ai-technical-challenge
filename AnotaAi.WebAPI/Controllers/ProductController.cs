@@ -63,8 +63,8 @@ public class ProductController : Controller
     [HttpDelete]
     public async Task<IActionResult> Delete([Required] string id, CancellationToken cancellationToken)
     {
-        catalogService.PublishEvent(id);
         await productService.DeleteAsync(id, cancellationToken);
+        catalogService.PublishEvent(id);
         return Ok();
     }
 }

@@ -2,58 +2,96 @@
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
-using Amazon.S3.Transfer;
 using Microsoft.Extensions.Configuration;
 
 namespace AnotaAi.Application.Services;
 
 public interface ICatalogService
 {
-    Task<string> GetCatalogJsonAsync(CancellationToken cancellationToken);
-    Task UpdateCatalogJsonAsync(CancellationToken cancellationToken);
+    Task<string?> GetCatalogJsonAsync(string ownerId, CancellationToken cancellationToken);
+    Task<bool> UpdateCatalogJsonAsync(string ownerId, string jsonContent, CancellationToken cancellationToken);
+    //Task UpdateCatalogJsonAsync(string ownerId, CancellationToken cancellationToken);
 }
 
 public class CatalogService : ICatalogService
 {
     private readonly string _bucketName;
-    private readonly string _jsonFileName;
 
     public CatalogService(IConfiguration configuration)
     {
         _bucketName = configuration["AWS:BucketName"] ?? throw new Exception();
-        _jsonFileName = configuration["AWS:JsonFileName"] ?? throw new Exception();
     }
 
-    public async Task<string> GetCatalogJsonAsync(CancellationToken cancellationToken)
+    public async Task<string?> GetCatalogJsonAsync(string ownerId, CancellationToken cancellationToken)
     {
-        var credentials = new BasicAWSCredentials(Environment.GetEnvironmentVariable("AWS_ACCESS_KEY"), Environment.GetEnvironmentVariable("AWS_SECRET_KEY"));
-
-        var s3Client = new AmazonS3Client(credentials, RegionEndpoint.SAEast1);
-
-        var request = new GetObjectRequest
+        try
         {
-            BucketName = _bucketName,
-            Key = _jsonFileName
-        };
+            var credentials = new BasicAWSCredentials(Environment.GetEnvironmentVariable("AWS_ACCESS_KEY"), Environment.GetEnvironmentVariable("AWS_SECRET_KEY"));
 
-        using var response = await s3Client.GetObjectAsync(request, cancellationToken);
+            var s3Client = new AmazonS3Client(credentials, RegionEndpoint.SAEast1);
 
-        using var reader = new StreamReader(response.ResponseStream);
+            var request = new GetObjectRequest
+            {
+                BucketName = _bucketName,
+                Key = ownerId + ".json"
+            };
 
-        return await reader.ReadToEndAsync(cancellationToken);
+            using var response = await s3Client.GetObjectAsync(request, cancellationToken);
+
+            using var reader = new StreamReader(response.ResponseStream);
+
+            return await reader.ReadToEndAsync(cancellationToken);
+        }
+        catch (AmazonS3Exception)
+        {
+            return string.Empty;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
     }
 
-
-    public async Task UpdateCatalogJsonAsync(CancellationToken cancellationToken)
+    public async Task<bool> UpdateCatalogJsonAsync(string ownerId, string jsonContent, CancellationToken cancellationToken)
     {
-        var credentials = new BasicAWSCredentials(Environment.GetEnvironmentVariable("AWS_ACCESS_KEY"), Environment.GetEnvironmentVariable("AWS_SECRET_KEY"));
+        try
+        {
+            var credentials = new BasicAWSCredentials(Environment.GetEnvironmentVariable("AWS_ACCESS_KEY"), Environment.GetEnvironmentVariable("AWS_SECRET_KEY"));
 
-        var s3Client = new AmazonS3Client(credentials, RegionEndpoint.SAEast1);
+            var s3Client = new AmazonS3Client(credentials, RegionEndpoint.SAEast1);
 
-        var fileTransferUtility = new TransferUtility(s3Client);
+            var request = new PutObjectRequest
+            {
+                BucketName = _bucketName,
+                Key = ownerId + ".json",
+                ContentBody = jsonContent,
+                ContentType = "application/json"
+            };
 
-        var filePath = "";
+            var response = await s3Client.PutObjectAsync(request, cancellationToken);
 
-        await fileTransferUtility.UploadAsync(filePath: filePath, bucketName: _bucketName, cancellationToken);
+            return response.HttpStatusCode == System.Net.HttpStatusCode.OK;
+        }
+        catch (AmazonS3Exception)
+        {
+            return false;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
+
+    //public async Task UpdateCatalogJsonAsync(string ownerId, CancellationToken cancellationToken)
+    //{
+    //    var credentials = new BasicAWSCredentials(Environment.GetEnvironmentVariable("AWS_ACCESS_KEY"), Environment.GetEnvironmentVariable("AWS_SECRET_KEY"));
+
+    //    var s3Client = new AmazonS3Client(credentials, RegionEndpoint.SAEast1);
+
+    //    var fileTransferUtility = new TransferUtility(s3Client);
+
+    //    var filePath = "";
+
+    //    await fileTransferUtility.UploadAsync(filePath: filePath, bucketName: _bucketName, cancellationToken);
+    //}
 }

@@ -45,8 +45,9 @@ public class CategoryController : Controller
     public async Task<IActionResult> Create([FromBody] CategoryDto categoryCreateDto, CancellationToken cancellationToken)
     {
         var category = new Category(categoryCreateDto);
+        var result = await categoryService.InsertAsync(category, cancellationToken);
         catalogService.PublishEvent(categoryCreateDto.OwnerId);
-        return Ok(await categoryService.InsertAsync(category, cancellationToken));
+        return Ok(result);
     }
 
     [HttpDelete]

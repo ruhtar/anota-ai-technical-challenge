@@ -2,9 +2,9 @@
 
 public record ProductDto
 (
-    string Title,
-    string Description,
-    decimal Price,
-    string CategoryId,
+    string? Title,
+    string? Description,
+    decimal? Price,
+    string? CategoryId,
     string OwnerId
 );
