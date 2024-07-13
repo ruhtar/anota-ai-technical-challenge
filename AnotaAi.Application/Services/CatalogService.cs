@@ -10,7 +10,6 @@ namespace AnotaAi.Application.Services;
 public interface ICatalogService
 {
     Task<string> GetCatalogJsonAsync(CancellationToken cancellationToken);
-    Task<string> UpdateCatalogJsonAsync(string json, CancellationToken cancellationToken);
     Task UpdateCatalogJsonAsync(CancellationToken cancellationToken);
 }
 

@@ -9,7 +9,6 @@
   <ItemGroup>
     <PackageReference Include="AWSSDK.S3" Version="3.7.310.6" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
-    <PackageReference Include="MongoDB.Driver" Version="2.24.0" />
     <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
   </ItemGroup>
 
