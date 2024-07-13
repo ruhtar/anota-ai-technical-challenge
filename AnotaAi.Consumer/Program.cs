@@ -13,12 +13,14 @@ public class Program
 
         builder.Services.Configure<RabbitMQOptions>(builder.Configuration.GetSection("RabbitMQOptions"));
 
+        builder.Services.AddSingleton<IRabbitMQService, RabbitMQService>();
+
         builder.Services.AddSingleton<IProductRepository, ProductRepository>();
         builder.Services.AddSingleton<ICategoryRepository, CategoryRepository>();
 
         builder.Services.AddSingleton<ICategoryService, CategoryService>();
-        builder.Services.AddSingleton<ICatalogService, CatalogService>();
         builder.Services.AddSingleton<IProductService, ProductService>();
+        builder.Services.AddSingleton<ICatalogService, CatalogService>();
         builder.Services.AddSingleton<ICatalogUseCase, CatalogUseCase>();
         builder.Services.AddSingleton<IConsumerService, ConsumerService>();
         builder.Services.AddSingleton<ICatalogConsumerHostedService, CatalogConsumerHostedService>();

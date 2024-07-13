@@ -1,6 +1,5 @@
-﻿using AnotaAi.Application.UseCases;
-using AnotaAi.Domain.Options;
-using Microsoft.Extensions.Options;
+﻿using AnotaAi.Application.Services;
+using AnotaAi.Application.UseCases;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
@@ -21,21 +20,9 @@ public class ConsumerService : IConsumerService, IDisposable
     private readonly IConnection connection;
     private readonly ICatalogUseCase catalogUseCase;
 
-    public ConsumerService(IOptions<RabbitMQOptions> rabbitMQOptions, ICatalogUseCase catalogUseCase)
+    public ConsumerService(ICatalogUseCase catalogUseCase, IRabbitMQService rabbitMQService)
     {
-        //TODO: ABSTRACT THIS
-        var factory = new ConnectionFactory()
-        {
-            DispatchConsumersAsync = true,
-            HostName = rabbitMQOptions.Value.HostName,
-            VirtualHost = rabbitMQOptions.Value.VirtualHost,
-            UserName = rabbitMQOptions.Value.UserName,
-            Password = rabbitMQOptions.Value.Password,
-            Uri = rabbitMQOptions.Value.Uri
-        };
-
-        connection = factory.CreateConnection();
-        channel = connection.CreateModel();
+        channel = rabbitMQService.CreateChannel();
 
         channel.ExchangeDeclare(ExchangeName, ExchangeType.Topic, durable: true);
         channel.QueueDeclare(QueueName, true, false, false, null);
@@ -52,10 +39,7 @@ public class ConsumerService : IConsumerService, IDisposable
         {
             var body = ea.Body.ToArray();
             var ownerId = Encoding.UTF8.GetString(body);
-            var isSucess = await catalogUseCase.UpdateOwnerCatalog(ownerId, cancellationToken);
-
-            // copy or deserialise the payload
-            // and process the message
+            var _ = await catalogUseCase.UpdateOwnerCatalog(ownerId, cancellationToken);
             await Task.CompletedTask;
             channel.BasicAck(ea.DeliveryTag, false);
         };

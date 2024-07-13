@@ -18,21 +18,9 @@ public class CatalogProducer : ICatalogProducer, IDisposable
     private readonly IModel channel;
     private readonly IConnection connection;
 
-    public CatalogProducer(IOptions<RabbitMQOptions> rabbitMQOptions)
+    public CatalogProducer(IOptions<RabbitMQOptions> rabbitMQOptions, IRabbitMQService rabbitMQService)
     {
-        //TODO: ABSTRACT THIS
-        var factory = new ConnectionFactory()
-        {
-            DispatchConsumersAsync = true,
-            HostName = rabbitMQOptions.Value.HostName,
-            VirtualHost = rabbitMQOptions.Value.VirtualHost,
-            UserName = rabbitMQOptions.Value.UserName,
-            Password = rabbitMQOptions.Value.Password,
-            Uri = rabbitMQOptions.Value.Uri
-        };
-
-        connection = factory.CreateConnection();
-        channel = connection.CreateModel();
+        channel = rabbitMQService.CreateChannel();
 
         channel.ExchangeDeclare(ExchangeName, ExchangeType.Topic, durable: true);
         channel.QueueDeclare(QueueName, true, false, false, null);
