@@ -59,15 +59,19 @@ public class ProductController : Controller
             return Problem();
 
         catalogService.PublishEvent(product.OwnerId);
-        return Ok();
+        return Ok(product);
     }
 
     //TODO: WHAT SHOULD HAPPEN TO THE PRODUCTS OF A CATEGORY WHEN THE CATEGORY IS DELETED?
     [HttpDelete]
     public async Task<IActionResult> Delete([Required] string id, CancellationToken cancellationToken)
     {
-        await productService.DeleteAsync(id, cancellationToken);
-        catalogService.PublishEvent(id);
-        return Ok();
+        var product = await productService.DeleteAsync(id, cancellationToken);
+
+        if (product is null)
+            return Problem();
+
+        catalogService.PublishEvent(product.OwnerId);
+        return Ok(product);
     }
 }

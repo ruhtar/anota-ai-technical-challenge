@@ -6,7 +6,7 @@ namespace AnotaAi.Application.Services;
 
 public interface IProductService
 {
-    Task DeleteAsync(string id, CancellationToken cancellationToken);
+    Task<Product?> DeleteAsync(string id, CancellationToken cancellationToken);
     Task<IEnumerable<Product>> GetAllAsync(CancellationToken cancellationToken);
     Task<IEnumerable<Product>> GetAllByOwnerIdAsync(string ownerId, CancellationToken cancellationToken);
     Task<Product> GetById(string id, CancellationToken cancellationToken);
@@ -28,7 +28,7 @@ public class ProductService : IProductService
     public async Task<IEnumerable<Product>> GetAllByOwnerIdAsync(string ownerId, CancellationToken cancellationToken) =>
         await productRepository.GetAllByOwnerIdAsync(ownerId, cancellationToken);
 
-    public async Task DeleteAsync(string id, CancellationToken cancellationToken) => await productRepository.DeleteAsync(id, cancellationToken);
+    public async Task<Product?> DeleteAsync(string id, CancellationToken cancellationToken) => await productRepository.DeleteAsync(id, cancellationToken);
 
     public async Task<IEnumerable<Product>> GetAllAsync(CancellationToken cancellationToken) => await productRepository.GetAllAsync(cancellationToken);
 
@@ -36,6 +36,8 @@ public class ProductService : IProductService
 
     public async Task<Product> InsertAsync(Product product, CancellationToken cancellationToken)
     {
+        //TODO: AVOID DOUBLE INSERTS
+
         var _ = await categoryService.GetByIdAsync(product.CategoryId, cancellationToken) ?? throw new Exception("Category not found");
         await productRepository.InsertAsync(product, cancellationToken);
         return product;

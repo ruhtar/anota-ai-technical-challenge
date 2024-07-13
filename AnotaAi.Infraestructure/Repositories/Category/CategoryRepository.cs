@@ -8,7 +8,7 @@ namespace AnotaAi.Infraestructure.Repositories;
 
 public interface ICategoryRepository
 {
-    Task DeleteAsync(string id, CancellationToken cancellationToken);
+    Task<Category?> DeleteAsync(string id, CancellationToken cancellationToken);
     Task<IEnumerable<Category>> GetAllAsync(CancellationToken cancellationToken);
     Task<Category> GetByIdAsync(string id, CancellationToken cancellationToken);
     Task<IEnumerable<Category>> GetAllByOwnerIdAsync(string ownerId, CancellationToken cancellationToken);
@@ -62,9 +62,10 @@ public class CategoryRepository : ICategoryRepository
         return await _categoryCollection.Find(filter).FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task DeleteAsync(string id, CancellationToken cancellationToken)
+    public async Task<Category?> DeleteAsync(string id, CancellationToken cancellationToken)
     {
         var filter = Builders<Category>.Filter.Eq("_id", ObjectId.Parse(id));
-        await _categoryCollection.DeleteOneAsync(filter, cancellationToken);
+
+        return await _categoryCollection.FindOneAndDeleteAsync(filter, null, cancellationToken);
     }
 }

@@ -8,7 +8,7 @@ namespace AnotaAi.Infraestructure.Repositories;
 
 public interface IProductRepository
 {
-    Task DeleteAsync(string id, CancellationToken cancellationToken);
+    Task<Product?> DeleteAsync(string id, CancellationToken cancellationToken);
     Task<IEnumerable<Product>> GetAllAsync(CancellationToken cancellationToken);
     Task<IEnumerable<Product>> GetAllByOwnerIdAsync(string ownerId, CancellationToken cancellationToken);
     Task<Product> GetByIdAsync(string id, CancellationToken cancellationToken);
@@ -76,9 +76,9 @@ public class ProductRepository : IProductRepository
         return await _productsCollection.FindOneAndUpdateAsync(filter, combinedUpdate, options, cancellationToken);
     }
 
-    public async Task DeleteAsync(string id, CancellationToken cancellationToken)
+    public async Task<Product?> DeleteAsync(string id, CancellationToken cancellationToken)
     {
         var filter = Builders<Product>.Filter.Eq("_id", ObjectId.Parse(id));
-        await _productsCollection.DeleteOneAsync(filter, cancellationToken);
+        return await _productsCollection.FindOneAndDeleteAsync(filter, null, cancellationToken);
     }
 }

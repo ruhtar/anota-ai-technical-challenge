@@ -53,9 +53,13 @@ public class CategoryController : Controller
     [HttpDelete]
     public async Task<IActionResult> Delete(string id, CancellationToken cancellationToken)
     {
-        await categoryService.DeleteAsync(id, cancellationToken);
-        catalogService.PublishEvent(id);
-        return Ok();
+        var category = await categoryService.DeleteAsync(id, cancellationToken);
+
+        if (category is null)
+            return Problem();
+
+        catalogService.PublishEvent(category.OwnerId);
+        return Ok(category);
     }
 
     [HttpPatch]
@@ -67,6 +71,6 @@ public class CategoryController : Controller
             return Problem();
 
         catalogService.PublishEvent(category.OwnerId);
-        return Ok();
+        return Ok(category);
     }
 }

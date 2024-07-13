@@ -6,7 +6,7 @@ namespace AnotaAi.Application.Services;
 
 public interface ICategoryService
 {
-    Task DeleteAsync(string id, CancellationToken cancellationToken);
+    Task<Category?> DeleteAsync(string id, CancellationToken cancellationToken);
     Task<IEnumerable<Category>> GetAllAsync(CancellationToken cancellationToken);
     Task<Category> GetByIdAsync(string id, CancellationToken cancellationToken);
     Task<IEnumerable<Category>> GetAllByOwnerIdAsync(string ownerId, CancellationToken cancellationToken);
@@ -24,6 +24,7 @@ public class CategoryService : ICategoryService
     }
     public async Task<Category> InsertAsync(Category category, CancellationToken cancellationToken)
     {
+        //TODO: AVOID DOUBLE INSERTS
         await categoryRepository.InsertAsync(category, cancellationToken);
         return category;
     }
@@ -40,6 +41,6 @@ public class CategoryService : ICategoryService
     public async Task<Category> GetByIdAsync(string id, CancellationToken cancellationToken)
         => await categoryRepository.GetByIdAsync(id, cancellationToken);
 
-    public async Task DeleteAsync(string id, CancellationToken cancellationToken)
+    public async Task<Category?> DeleteAsync(string id, CancellationToken cancellationToken)
         => await categoryRepository.DeleteAsync(id, cancellationToken);
 }
