@@ -49,39 +49,28 @@ You can find the challenge repository here: [Anota Aí Backend Challenge](https:
 
 ### Product Endpoints
 
-- **GET /api/products/{id}**
-  - Gets a product.
-
-- **GET /api/products**
-  - Gets all products.
-
-- **POST /api/products**
-  - Register a new product.
-
-- **PATCH /api/products/{id}**
-  - Update a product's data.
-
-- **DELETE /api/products/{id}**
-  - Delete a product.
+| HTTP Method | Endpoint             | Description                |
+|-------------|-----------------------|----------------------------|
+| GET         | /api/products/{id}    | Gets a product.            |
+| GET         | /api/products         | Gets all products.         |
+| POST        | /api/products         | Register a new product.    |
+| PATCH       | /api/products/{id}    | Update a product's data.   |
+| DELETE      | /api/products/{id}    | Delete a product.          |
 
 ### Category Endpoints
 
-- **GET /api/categories/{id}**
-  - Gets a category.
-
-- **GET /api/categories**
-  - Gets all categories.
-
-- **PATCH /api/categories/{id}**
-  - Update a category's data.
-
-- **DELETE /api/categories/{id}**
-  - Delete a category.
+| HTTP Method | Endpoint             | Description                |
+|-------------|-----------------------|----------------------------|
+| GET         | /api/categories/{id}  | Gets a category.           |
+| GET         | /api/categories       | Gets all categories.       |
+| PATCH       | /api/categories/{id}  | Update a category's data.  |
+| DELETE      | /api/categories/{id}  | Delete a category.         |
 
 ### Catalog Endpoints
 
-- **GET /api/catalog/{ownerId}**
-  - Retrieve the catalog for a specific owner.
+| HTTP Method | Endpoint             | Description                         |
+|-------------|-----------------------|-------------------------------------|
+| GET         | /api/catalog/{ownerId} | Retrieve the catalog for a specific owner. |
 
 ## Message Queue and Storage
 
