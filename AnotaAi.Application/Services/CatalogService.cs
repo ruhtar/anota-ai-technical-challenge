@@ -11,7 +11,6 @@ public interface ICatalogService
     Task<bool> SaveToS3StorageAsync(string ownerId, string jsonContent, CancellationToken cancellationToken);
 }
 
-//TODO: CREATE A REPOSITORY TO THIS
 public class CatalogService : ICatalogService
 {
     private readonly string _bucketName;
