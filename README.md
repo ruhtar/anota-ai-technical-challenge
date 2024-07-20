@@ -58,7 +58,7 @@ You can find the challenge repository here: [Anota Aí Backend Challenge](https:
 - **POST /api/products**
   - Register a new product.
 
-- **PUT /api/products/{id}**
+- **PATCH /api/products/{id}**
   - Update a product's data.
 
 - **DELETE /api/products/{id}**
@@ -72,7 +72,7 @@ You can find the challenge repository here: [Anota Aí Backend Challenge](https:
 - **GET /api/categories**
   - Gets all categories.
 
-- **PUT /api/categories/{id}**
+- **PATCH /api/categories/{id}**
   - Update a category's data.
 
 - **DELETE /api/categories/{id}**
@@ -86,7 +86,6 @@ You can find the challenge repository here: [Anota Aí Backend Challenge](https:
 ## Message Queue and Storage
 
 - **RabbitMQ**: Used for publishing catalog change events.
-  - Topic: `catalog-emit`
+  - Topic: `catalog-queue`
   
 - **AWS S3**: Used for storing catalog JSON files.
-  - Bucket: `product-catalog-bucket`
