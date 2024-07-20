@@ -25,7 +25,7 @@ public class CatalogService : ICatalogService
     {
         try
         {
-            var credentials = new BasicAWSCredentials(null, null);
+            var credentials = new BasicAWSCredentials(Environment.GetEnvironmentVariable("AWS_ACCESS_KEY"), Environment.GetEnvironmentVariable("AWS_SECRET_KEY"));
 
             var s3Client = new AmazonS3Client(credentials, RegionEndpoint.SAEast1);
 
@@ -71,10 +71,6 @@ public class CatalogService : ICatalogService
 
             return response.HttpStatusCode == System.Net.HttpStatusCode.OK;
         }
-        //catch (AmazonS3Exception)
-        //{
-        //    return false;
-        //}
         catch (Exception)
         {
             return false;
