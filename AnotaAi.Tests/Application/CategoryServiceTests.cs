@@ -5,6 +5,8 @@ using AnotaAi.Infraestructure.Repositories;
 using Moq;
 using Xunit;
 
+namespace AnotaAi.Tests.Application;
+
 public class CategoryServiceTests
 {
     private readonly Mock<ICategoryRepository> mockCategoryRepository;
