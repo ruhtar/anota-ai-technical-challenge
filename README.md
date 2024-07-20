@@ -75,6 +75,7 @@ You can find the challenge repository here: [Anota Aí Backend Challenge](https:
 ## Message Queue and Storage
 
 - **RabbitMQ**: Used for publishing catalog change events.
-  - Topic: `catalog-queue`
+  - Exhange: `catalog-topic`
+  - Queue: `catalog-queue`
   
 - **AWS S3**: Used for storing catalog JSON files.
