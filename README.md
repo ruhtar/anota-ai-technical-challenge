@@ -7,6 +7,8 @@
 - The system uses MongoDB as the database and AWS S3 for storing the catalog JSON. 
 - The primary functionalities include creating, updating, associating, and deleting products and categories, as well as managing and publishing catalog changes.
 
+You can find the challenge repository here: [Anota Aí Backend Challenge](https://github.com/githubanotaai/new-test-backend-nodejs)
+
 ## Technologies Used
 
 - **.NET**: Backend framework for developing the API.
