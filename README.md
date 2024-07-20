@@ -6,6 +6,8 @@
 - The API was developed using .NET instead of Node.js (as C# is my main programming language), and RabbitMQ was used for message queuing instead of AWS SQS because it is a technology that I'm currently learning. 
 - The system uses MongoDB as the database and AWS S3 for storing the catalog JSON. 
 - The primary functionalities include creating, updating, associating, and deleting products and categories, as well as managing and publishing catalog changes.
+  
+![Diagram](https://github.com/githubanotaai/new-test-backend-nodejs/assets/52219768/504ba448-f128-41db-ae86-18dc19c0dc9d)
 
 You can find the challenge repository here: [Anota Aí Backend Challenge](https://github.com/githubanotaai/new-test-backend-nodejs)
 
