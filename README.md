@@ -49,26 +49,31 @@ You can find the challenge repository here: [Anota Aí Backend Challenge](https:
 
 ### Product Endpoints
 
+- **GET /api/products/{id}**
+  - Gets a product.
+
+- **GET /api/products**
+  - Gets all products.
+
 - **POST /api/products**
   - Register a new product.
-  - Request Body: `{ "title": "Product Title", "description": "Product Description", "price": 100, "categoryId": "CategoryId", "ownerId": "OwnerId" }`
 
 - **PUT /api/products/{id}**
   - Update a product's data.
-  - Request Body: `{ "title": "Updated Title", "description": "Updated Description", "price": 150, "categoryId": "NewCategoryId" }`
 
 - **DELETE /api/products/{id}**
   - Delete a product.
 
 ### Category Endpoints
 
-- **POST /api/categories**
-  - Register a new category.
-  - Request Body: `{ "title": "Category Title", "description": "Category Description", "ownerId": "OwnerId" }`
+- **GET /api/categories/{id}**
+  - Gets a category.
+
+- **GET /api/categories**
+  - Gets all categories.
 
 - **PUT /api/categories/{id}**
   - Update a category's data.
-  - Request Body: `{ "title": "Updated Title", "description": "Updated Description" }`
 
 - **DELETE /api/categories/{id}**
   - Delete a category.
