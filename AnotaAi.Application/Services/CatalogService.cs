@@ -2,7 +2,6 @@
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
-using Microsoft.Extensions.Configuration;
 
 namespace AnotaAi.Application.Services;
 
@@ -17,16 +16,16 @@ public class CatalogService : ICatalogService
 {
     private readonly string _bucketName;
 
-    public CatalogService(IConfiguration configuration)
+    public CatalogService()
     {
-        _bucketName = configuration["AWS:BucketName"] ?? throw new Exception();
+        _bucketName = Environment.GetEnvironmentVariable("BUCKET_NAME") ?? throw new Exception();
     }
 
     public async Task<string?> GetCatalogJsonAsync(string ownerId, CancellationToken cancellationToken)
     {
         try
         {
-            var credentials = new BasicAWSCredentials(Environment.GetEnvironmentVariable("AWS_ACCESS_KEY"), Environment.GetEnvironmentVariable("AWS_SECRET_KEY"));
+            var credentials = new BasicAWSCredentials(null, null);
 
             var s3Client = new AmazonS3Client(credentials, RegionEndpoint.SAEast1);
 
