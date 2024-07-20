@@ -11,6 +11,8 @@ This project is a backend API for Anota Aí Code Challange for MidLevel position
 - **RabbitMQ**: Message queue service for catalog change notifications.
 - **AWS S3**: Storage service for catalog JSON files.
 - **ASP.NET Core**: Web framework for handling HTTP requests.
+- **XUnit**: Integration and unit tests.
+- **Moq**: Mock lib used for tests.
 
 ## Must have User Stories for the challenge 
 
