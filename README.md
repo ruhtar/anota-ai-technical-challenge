@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a backend API for Anota Aí Code Challange for MidLevel position. This application manages a product catalog in a marketplace application. The API was developed using .NET instead of Node.js, and RabbitMQ was used for message queuing instead of AWS SQS. The system uses MongoDB as the database and AWS S3 for storing the catalog JSON. The primary functionalities include creating, updating, associating, and deleting products and categories, as well as managing and publishing catalog changes.
+This project is a backend API for Anota Aí Code Challange for MidLevel position. This application manages a product catalog in a marketplace application. The API was developed using .NET instead of Node.js (as C# is my main programming language), and RabbitMQ was used for message queuing instead of AWS SQS because it is a technology that I'm currently learning. The system uses MongoDB as the database and AWS S3 for storing the catalog JSON. The primary functionalities include creating, updating, associating, and deleting products and categories, as well as managing and publishing catalog changes.
 
 ## Technologies Used
 
